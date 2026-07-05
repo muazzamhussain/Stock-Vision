@@ -6,8 +6,13 @@ import SelectField from "@/components/Forms/SelectField";
 import {INVESTMENT_GOALS, PREFERRED_INDUSTRIES, RISK_TOLERANCE_OPTIONS} from "@/lib/constants";
 import {CountrySelectField} from "@/components/Forms/CountrySelectField";
 import FooterLink from "@/components/Forms/FooterLink";
+import {useRouter} from "next/navigation";
+import {signUpWithEmail} from "@/lib/actions/auth.actions";
+import {toast} from "sonner";
 
 const Signup = () => {
+
+    const router = useRouter();
 
     const {
         register, handleSubmit, control, formState: {errors, isSubmitting},
@@ -26,9 +31,13 @@ const Signup = () => {
 
     const onSubmit = async (data: SignUpFormData) => {
         try {
-            console.log(data)
+            const result = await signUpWithEmail(data);
+            if (result.success) router.push('/');
         } catch (e) {
-            console.log(e)
+            console.log(e);
+            toast.error("Sign up failed.", {
+                description: e instanceof Error ? e.message:JSON.stringify("Account creation failed"),
+            });
         }
     }
 
@@ -54,9 +63,10 @@ const Signup = () => {
                     error={errors.email}
                     validation={{
                         required: 'Email is required',
-                        pattern: /^w+@\w+\.\w+$/,
-                        message: 'Email address is required',
-                        minLength: 2
+                        pattern: {
+                            value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                            message: 'Enter a valid email address',
+                        },
                     }}
                 />
                 <InputField
