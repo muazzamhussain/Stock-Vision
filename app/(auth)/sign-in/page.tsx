@@ -4,9 +4,8 @@ import { useForm } from 'react-hook-form';
 import { Button } from '@/components/ui/button';
 import InputField from '@/components/Forms/InputField';
 import FooterLink from '@/components/Forms/FooterLink';
-import {signInWithEmail, signUpWithEmail} from "@/lib/actions/auth.actions";
+import {signInWithEmail} from "@/lib/actions/auth.actions";
 import {toast} from "sonner";
-import {signInEmail} from "better-auth/api";
 import {useRouter} from "next/navigation";
 
 const SignIn = () => {
@@ -20,20 +19,28 @@ const SignIn = () => {
             email: '',
             password: '',
         },
-        mode: 'onBlur',
+        mode: 'onTouched',
     });
 
     const onSubmit = async (data: SignInFormData) => {
         try {
             const result = await signInWithEmail(data);
-            if(result.success) router.push('/');
+
+            if (result.success) {
+                router.push('/');
+            } else {
+                // ✅ Handle unsuccessful login
+                toast.error('Sign in failed', {
+                    description: result.error || 'Invalid email or password.',
+                });
+            }
         } catch (e) {
             console.error(e);
             toast.error('Sign in failed', {
-                description: e instanceof Error ? e.message : 'Failed to sign in.'
-            })
+                description: e instanceof Error ? e.message : 'Failed to sign in.',
+            });
         }
-    }
+    };
 
     return (
         <>
@@ -43,20 +50,32 @@ const SignIn = () => {
                 <InputField
                     name="email"
                     label="Email"
-                    placeholder="contact@jsmastery.com"
+                    placeholder="johndoe@mail.com"
                     register={register}
                     error={errors.email}
-                    validation={{ required: 'Email is required', pattern: /^\w+@\w+\.\w+$/ }}
+                    validation={{
+                        required: 'Email is required',
+                        pattern: {
+                            value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                            message: 'Enter a valid email address',
+                        },
+                    }}
                 />
 
                 <InputField
                     name="password"
                     label="Password"
-                    placeholder="Enter your password"
                     type="password"
+                    placeholder="Enter a Strong Password"
                     register={register}
                     error={errors.password}
-                    validation={{ required: 'Password is required', minLength: 8 }}
+                    validation={{
+                        required: 'Password is required',
+                        minLength: {
+                            value: 8,
+                            message: 'Password must be at least 8 characters'
+                        }
+                    }}
                 />
 
                 <Button type="submit" disabled={isSubmitting} className="yellow-btn w-full mt-5">

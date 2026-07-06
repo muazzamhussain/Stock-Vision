@@ -49,11 +49,16 @@ export const signInWithEmail = async ({email, password}: SignInFormData) => {
     try {
         const response = await auth.api.signInEmail({body: {email, password}})
 
+        if(!response || !response.user){
+            return{
+                success: false,
+                error:"Incorrect email or password"
+            }
+        }
         return {success: true, data: response};
     } catch (error) {
-        console.log("Sign in failed", error);
-        return {success: false, error: "Sign in Failed"};
-
+        console.error("Sign in error", error);
+        return {success: false, error: error?.message || "Invalid email or password."};
     }
 
 }
