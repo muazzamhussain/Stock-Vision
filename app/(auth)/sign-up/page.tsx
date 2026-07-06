@@ -26,8 +26,8 @@ const Signup = () => {
             riskTolerance: "Medium",
             preferredIndustry: "Technology",
         },
-        mode: "onBlur"
-    },)
+        mode: "onTouched"
+    })
 
     const onSubmit = async (data: SignUpFormData) => {
         try {
@@ -53,8 +53,15 @@ const Signup = () => {
                     placeholder="John Doe"
                     register={register}
                     error={errors.fullName}
-                    validation={{required: 'Full name is required', minLength: 2}}
+                    validation={{
+                        required: 'Full name is required',
+                        minLength: {
+                            value: 2,
+                            message: 'Name must be at least 2 characters'
+                        }
+                    }}
                 />
+
                 <InputField
                     name="email"
                     label="Email"
@@ -69,6 +76,7 @@ const Signup = () => {
                         },
                     }}
                 />
+
                 <InputField
                     name="password"
                     label="Password"
@@ -76,7 +84,13 @@ const Signup = () => {
                     placeholder="Enter a Strong Password"
                     register={register}
                     error={errors.password}
-                    validation={{required: 'Password is required', minLength: 8}}
+                    validation={{
+                        required: 'Password is required',
+                        minLength: {
+                            value: 8,
+                            message: 'Password must be at least 8 characters'
+                        }
+                    }}
                 />
 
                 <CountrySelectField
