@@ -1,57 +1,197 @@
 <div align="center">
-  <h3 align="center">Stock Vision AI — Alerts, Charts, AI Insights</h3>
+  <h1>📈 Stock Vision</h1>
+  <p><strong>AI-powered stock market platform with real-time data, watchlists, and automated insights.</strong></p>
 
-   <div align="center">
-     Stock Vision is a Stock Market App featuring Alerts, Charts, AI Insights.
-    </div>
+  <p>
+    <img src="https://img.shields.io/badge/Next.js-15.5.2-black?logo=next.js" />
+    <img src="https://img.shields.io/badge/React-19-blue?logo=react" />
+    <img src="https://img.shields.io/badge/TypeScript-5-blue?logo=typescript" />
+    <img src="https://img.shields.io/badge/TailwindCSS-4-38bdf8?logo=tailwindcss" />
+    <img src="https://img.shields.io/badge/MongoDB-6-green?logo=mongodb" />
+  </p>
 </div>
 
-## 📋 <a name="table">Table of Contents</a>
+---
 
-1. ✨ [Introduction](#introduction)
-2. ⚙️ [Tech Stack](#tech-stack)
-3. 🔋  [Features](#features)
+## Table of Contents
 
-## <a name="introduction">✨ Introduction</a>
+1. [Introduction](#introduction)
+2. [Features](#features)
+3. [Tech Stack](#tech-stack)
+4. [Architecture](#architecture)
+5. [Getting Started](#getting-started)
+6. [Environment Variables](#environment-variables)
+7. [Available Scripts](#available-scripts)
+8. [Project Structure](#project-structure)
 
-AI-powered modern stock market app built with Next.js, Shadcn, Better Auth, and Inngest! Track real-time prices, set personalized alerts, explore company insights, and manage watchlists. The admin dashboard allows managing stocks, publishing news, and monitoring user activity, while event-driven workflows power automated alerts, AI-driven daily digests, earnings notifications, and sentiment analysis—perfect for devs who want a dynamic, real-time financial platform.
+---
 
-## <a name="tech-stack">⚙️ Tech Stack</a>
+## Introduction
 
-- **[Better Auth](https://www.better-auth.com/)** is a framework-agnostic authentication and authorization library for TypeScript. It provides built-in support for email/password login, social sign-on (Google, GitHub, Apple, and more), and multi-factor authentication, simplifying user authentication and account management.
+Stock Vision is a full-stack, AI-powered financial platform built with **Next.js 15**. It provides real-time stock market tracking, personalized watchlists, and automated AI-generated insights — all delivered through an event-driven background workflow system powered by **Inngest** and **Google Gemini**.
 
-- **[Finnhub](https://finnhub.io/)** is a real-time financial data API that provides stock, forex, and cryptocurrency market data. It offers developers access to fundamental data, economic indicators, and news, making it useful for building trading apps, dashboards, and financial analysis tools.
+---
 
-- **[Inngest](https://www.inngest.com)** is a platform for event-driven workflows and background jobs. It allows developers to build reliable, scalable automated processes such as real-time alerts, notifications, and AI-powered workflows.
+## Features
 
-- **[MongoDB](https://www.mongodb.com/)** is a flexible, high-performance NoSQL database. It stores data in JSON-like documents, supports dynamic schemas, and provides robust features for scalability, replication, and querying.
+- **Real-Time Stock Dashboard** — Track live prices with interactive charts powered by TradingView, including candlestick and line chart views.
+- **Powerful Search** — Quickly find stocks using an intelligent command-palette search (`Ctrl+K`).
+- **Watchlist Management** — Add and manage a personalized watchlist backed by MongoDB.
+- **AI-Powered Daily Digests** — Automated cron jobs aggregate watchlist news and summarize it using Google Gemini, delivered to your inbox.
+- **Personalized Welcome Emails** — AI-generated onboarding emails sent on sign-up via Inngest workflows.
+- **Company Insights** — View PE ratio, EPS, revenue, analyst ratings, recent news, and sentiment scores.
+- **Secure Authentication** — Email/password and social sign-on via Better Auth with session-based protection.
+- **Transactional Email** — SMTP-based email delivery using Nodemailer.
+- **Dark Mode** — Full dark/light theme support via `next-themes`.
 
-- **[Nodemailer](https://nodemailer.com/)** is a Node.js library for sending emails easily. It supports various transport methods such as SMTP, OAuth2, and third-party services, making it a reliable tool for handling transactional emails, notifications, and contact forms in applications.
+---
 
-- **[Next.js](https://nextjs.org/docs)** is a powerful React framework for building full-stack web applications. It provides server-side rendering, static site generation, and API routes, allowing developers to create optimized and scalable apps quickly.
+## Tech Stack
 
-- **[Shadcn](https://ui.shadcn.com/docs)** is an open-source library of fully customizable, accessible React components. It helps teams rapidly build consistent, visually appealing UIs while allowing full control over design and layout.
+| Category | Technology | Version |
+|---|---|---|
+| Framework | [Next.js](https://nextjs.org/) | 15.5.2 |
+| Language | [TypeScript](https://www.typescriptlang.org/) | ^5 |
+| Authentication | [Better Auth](https://www.better-auth.com/) | ^1.3.7 |
+| Database | [MongoDB](https://www.mongodb.com/) + [Mongoose](https://mongoosejs.com/) | ^6 / ^8 |
+| Background Jobs | [Inngest](https://www.inngest.com/) | ^4.11.0 |
+| AI Engine | [Google Gemini](https://ai.google.dev/) | via API |
+| Market Data | [Finnhub](https://finnhub.io/) | via API |
+| Email | [Nodemailer](https://nodemailer.com/) | ^7.0.6 |
+| UI Components | [Shadcn UI](https://ui.shadcn.com/) + [Radix UI](https://www.radix-ui.com/) | — |
+| Styling | [Tailwind CSS](https://tailwindcss.com/) | ^4 |
+| Charts | [TradingView Widget](https://www.tradingview.com/widget/) | — |
+| Forms | [React Hook Form](https://react-hook-form.com/) | ^7 |
 
-- **[TailwindCSS](https://tailwindcss.com/)** is a utility-first CSS framework that allows developers to build custom, responsive designs quickly without leaving their HTML. It provides pre-defined classes for layout, typography, colors, and more.
+---
 
-- **[TypeScript](https://www.typescriptlang.org/)** is a statically typed superset of JavaScript that improves code quality, tooling, and error detection. It is ideal for building large-scale applications and enhances maintainability.
+## Architecture
 
-## <a name="features">🔋 Features</a>
+```
+┌─────────────────────────────────────────────────────┐
+│                     Client UI                       │
+│   SearchCommand  →  /stocks/[symbol]  →  Watchlist  │
+└────────────────────────┬────────────────────────────┘
+                         │
+┌────────────────────────▼────────────────────────────┐
+│              Next.js Server Layer                   │
+│  finnhub.actions.ts  │  auth.actions.ts             │
+│  watchlist.actions.ts │  user.actions.ts            │
+└──────────┬─────────────────────────┬────────────────┘
+           │                         │
+    ┌──────▼──────┐         ┌────────▼────────┐
+    │  Finnhub API│         │    MongoDB       │
+    └─────────────┘         └─────────────────┘
+           │
+┌──────────▼──────────────────────────────────────────┐
+│              Inngest Event Layer                     │
+│  Welcome Email Workflow  │  Daily Digest Cron Job   │
+│         ↓ Google Gemini AI ↓                        │
+│              Nodemailer (SMTP)                      │
+└─────────────────────────────────────────────────────┘
+```
 
-👉 **Stock Dashboard**: Track real-time stock prices with interactive line and candlestick charts, including historical data, and filter stocks by industry, performance, or market cap.
+---
 
-👉 **Powerful Search**: Quickly find the best stocks with an intelligent search system that helps you navigate through Stock Vision.
+## Getting Started
 
-👉 **Watchlist & Alerts**: Create a personalized watchlist, set alert thresholds for price changes or volume spikes, and receive instant email notifications to stay on top of the market.
+### Prerequisites
 
-👉 **Company Insights**: Explore detailed financial data such as PE ratio, EPS, revenue, recent news, filings, analyst ratings, and sentiment scores for informed decision-making.
+- **Node.js** (v18+)
+- **MongoDB** instance (Atlas or local)
+- API keys for **Finnhub**, **Google Gemini**, and **Inngest**
 
-👉 **Real-Time Workflows**: Powered by **Inngest**, automate event-driven processes like price updates, alert scheduling, automated reporting, and AI-driven insights.
+### Installation
 
-👉 **AI-Powered Alerts & Summaries**: Generate personalized market summaries, daily digests, and earnings report notifications, helping users track performance and make data-driven decisions.
+```bash
+# 1. Clone the repository
+git clone https://github.com/muazzamhussain/Stock-Vision.git
+cd Stock-Vision
 
-👉 **Customizable Notifications**: Fine-tune alerts and notifications based on user watchlists and preferences for a highly personalized experience.
+# 2. Install dependencies
+npm install
 
-👉 **Analytics & Insights**: Gain insights into user behavior, stock trends, and engagement metrics, enabling smarter business and trading decisions.
+# 3. Set up environment variables (see below)
+cp .env.example .env.local
 
-And many more, including code architecture and reusability.
+# 4. Verify database connection
+npm run test:db
+
+# 5. Start the development server
+npm run dev
+```
+
+The app will be available at `http://localhost:3000`.
+
+---
+
+## Environment Variables
+
+Create a `.env.local` file in the root directory with the following variables:
+
+```env
+# MongoDB
+MONGODB_URI=your_mongodb_connection_string
+
+# Finnhub (https://finnhub.io/)
+FINNHUB_API_KEY=your_finnhub_api_key
+
+# Better Auth
+BETTER_AUTH_SECRET=your_secret_key
+
+# Google Gemini AI
+GEMINI_API_KEY=your_gemini_api_key
+
+# Nodemailer (Gmail SMTP)
+NODEMAILER_EMAIL=your_gmail_address
+NODEMAILER_PASSWORD=your_gmail_app_password
+
+# App
+NEXT_PUBLIC_APP_URL=http://localhost:3000
+```
+
+---
+
+## Available Scripts
+
+| Script | Description |
+|---|---|
+| `npm run dev` | Start development server with Turbopack |
+| `npm run build` | Build for production |
+| `npm run start` | Start production server |
+| `npm run lint` | Run ESLint |
+| `npm run test:db` | Verify MongoDB connection |
+
+---
+
+## Project Structure
+
+```
+Stock-Vision/
+├── app/
+│   ├── (auth)/          # Sign-in and sign-up pages
+│   ├── (root)/          # Main app layout and stock pages
+│   │   └── stocks/      # Dynamic stock detail pages
+│   └── api/             # API routes (Better Auth, Inngest)
+├── components/          # Reusable UI components (Header, Forms, etc.)
+├── lib/
+│   ├── actions/         # Server actions (auth, finnhub, watchlist, user)
+│   ├── better-auth/     # Auth configuration
+│   ├── inngest/         # Background job functions and AI prompts
+│   ├── nodemailer/      # Email transport and templates
+│   ├── constants.ts     # App-wide constants
+│   └── utils.ts         # Utility helpers
+├── database/            # Mongoose models and DB connection
+├── hooks/               # Custom React hooks
+├── middleware/          # Next.js middleware (route protection)
+├── scripts/             # Utility scripts (e.g., test-db.mjs)
+├── types/               # Global TypeScript type declarations
+└── public/              # Static assets
+```
+
+---
+
+<div align="center">
+  Built with Next.js, Inngest, and Google Gemini.
+  <a href="https://muazzam.page.gd">Muazzam Hussain</a>
+</div>

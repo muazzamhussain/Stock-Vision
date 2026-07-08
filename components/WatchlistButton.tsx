@@ -1,9 +1,8 @@
 "use client";
-import React, { useMemo, useState } from "react";
 
-// Minimal WatchlistButton implementation to satisfy page requirements.
-// This component focuses on UI contract only. It toggles local state and
-// calls onWatchlistChange if provided. Styling hooks match globals.css.
+import { useEffect, useMemo, useState } from "react";
+import { toast } from "sonner";
+import { addToWatchlist, removeFromWatchlist } from "@/lib/actions/watchlist.actions";
 
 const WatchlistButton = ({
   symbol,
@@ -14,16 +13,41 @@ const WatchlistButton = ({
   onWatchlistChange,
 }: WatchlistButtonProps) => {
   const [added, setAdded] = useState<boolean>(!!isInWatchlist);
+  const [pending, setPending] = useState(false);
+
+  useEffect(() => {
+    setAdded(!!isInWatchlist);
+  }, [isInWatchlist]);
 
   const label = useMemo(() => {
     if (type === "icon") return added ? "" : "";
     return added ? "Remove from Watchlist" : "Add to Watchlist";
   }, [added, type]);
 
-  const handleClick = () => {
+  const handleClick = async () => {
+    if (pending) return;
+
     const next = !added;
-    setAdded(next);
-    onWatchlistChange?.(symbol, next);
+    setPending(true);
+
+    try {
+      const result = next
+        ? await addToWatchlist(symbol, company)
+        : await removeFromWatchlist(symbol);
+
+      if (!result.success) {
+        throw new Error(result.error);
+      }
+
+      setAdded(next);
+      onWatchlistChange?.(symbol, next);
+      toast.success(next ? `${symbol} added to your watchlist.` : `${symbol} removed from your watchlist.`);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Unable to update your watchlist right now.";
+      toast.error(message);
+    } finally {
+      setPending(false);
+    }
   };
 
   if (type === "icon") {
@@ -33,6 +57,7 @@ const WatchlistButton = ({
         aria-label={added ? `Remove ${symbol} from watchlist` : `Add ${symbol} to watchlist`}
         className={`watchlist-icon-btn ${added ? "watchlist-icon-added" : ""}`}
         onClick={handleClick}
+        disabled={pending}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -53,7 +78,7 @@ const WatchlistButton = ({
   }
 
   return (
-    <button className={`watchlist-btn ${added ? "watchlist-remove" : ""}`} onClick={handleClick}>
+    <button className={`watchlist-btn ${added ? "watchlist-remove" : ""}`} onClick={handleClick} disabled={pending}>
       {showTrashIcon && added ? (
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -66,7 +91,7 @@ const WatchlistButton = ({
           <path strokeLinecap="round" strokeLinejoin="round" d="M6 7h12M9 7V5a1 1 0 011-1h4a1 1 0 011 1v2m-7 4v6m4-6v6m4-6v6" />
         </svg>
       ) : null}
-      <span>{label}</span>
+      <span>{pending ? "Saving..." : label}</span>
     </button>
   );
 };
