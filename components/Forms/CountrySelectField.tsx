@@ -22,6 +22,14 @@ import { Check, ChevronsUpDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import countryList from 'react-select-country-list';
 
+type CountrySelectProps = {
+    name: string;
+    label: string;
+    control: Control<any>;
+    error?: FieldError;
+    required?: boolean;
+};
+
 const CountrySelect = ({
                            value,
                            onChange,

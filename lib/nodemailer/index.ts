@@ -1,37 +1,43 @@
-import nodemailer from "nodemailer";
-import {WELCOME_EMAIL_TEMPLATE} from "@/lib/nodemailer/templates";
+import nodemailer from 'nodemailer';
+import {WELCOME_EMAIL_TEMPLATE, NEWS_SUMMARY_EMAIL_TEMPLATE} from "@/lib/nodemailer/templates";
 
 export const transporter = nodemailer.createTransport({
-    host: process.env.NODEMAILER_HOST,
-    port: Number(process.env.NODEMAILER_PORT) || 587,
-    secure: false,
+    service: 'gmail',
     auth: {
-        user: process.env.NODEMAILER_EMAIL,
-        pass: process.env.NODEMAILER_PASSWORD,
-    },
-    debug: true,
-    logger: true,
-});
-
-transporter.verify((error) => {
-    if (error) {
-        console.error("SMTP Connection Error:", error);
-    } else {
-        console.log("✅ SMTP Server is ready to send emails");
+        user: process.env.NODEMAILER_EMAIL!,
+        pass: process.env.NODEMAILER_PASSWORD!,
     }
-});
+})
 
-export const sendWelcomeEmail = async ({email, name, intro}: WelcomeEmailData) => {
-    const htmlEmailTemplate = WELCOME_EMAIL_TEMPLATE
-        .replace("{{name}}", name)
-        .replace("{{intro}}", intro);
+export const sendWelcomeEmail = async ({ email, name, intro }: WelcomeEmailData) => {
+    const htmlTemplate = WELCOME_EMAIL_TEMPLATE
+        .replace('{{name}}', name)
+        .replace('{{intro}}', intro);
 
     const mailOptions = {
-        from: `"Stock Vision" <muazzam@stockvision.ai>`,
+        from: `"Stock Vision" <Stock Vision@jsmastery.pro>`,
         to: email,
-        subject: "Welcome to Stock Vision - Your stock market toolkit is ready",
-        text: "Thanks for joining Stock Vision",
-        html: htmlEmailTemplate,
+        subject: `Welcome to Stock Vision - your stock market toolkit is ready!`,
+        text: 'Thanks for joining Stock Vision',
+        html: htmlTemplate,
+    }
+
+    await transporter.sendMail(mailOptions);
+}
+
+export const sendNewsSummaryEmail = async (
+    { email, date, newsContent }: { email: string; date: string; newsContent: string }
+): Promise<void> => {
+    const htmlTemplate = NEWS_SUMMARY_EMAIL_TEMPLATE
+        .replace('{{date}}', date)
+        .replace('{{newsContent}}', newsContent);
+
+    const mailOptions = {
+        from: `"Stock Vision News" <Stock Vision@jsmastery.pro>`,
+        to: email,
+        subject: `📈 Market News Summary Today - ${date}`,
+        text: `Today's market news summary from Stock Vision`,
+        html: htmlTemplate,
     };
 
     await transporter.sendMail(mailOptions);
