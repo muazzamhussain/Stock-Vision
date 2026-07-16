@@ -179,3 +179,166 @@ export const searchStocks = cache(async (query?: string): Promise<StockWithWatch
   }
 });
 
+export const getStockMetrics = async (symbol: string) => {
+  try {
+    const token = process.env.FINNHUB_API_KEY ?? NEXT_PUBLIC_FINNHUB_API_KEY;
+    if (!token) {
+      throw new Error('FINNHUB API key is not configured');
+    }
+
+    const normalizedSymbol = symbol.toUpperCase();
+    
+    // Fetch all data in parallel
+    const [quote, profile, metrics] = await Promise.all([
+      fetchJSON<any>(`${FINNHUB_BASE_URL}/quote?symbol=${encodeURIComponent(normalizedSymbol)}&token=${token}`, 300),
+      fetchJSON<any>(`${FINNHUB_BASE_URL}/stock/profile2?symbol=${encodeURIComponent(normalizedSymbol)}&token=${token}`, 3600),
+      fetchJSON<any>(`${FINNHUB_BASE_URL}/stock/metric?symbol=${encodeURIComponent(normalizedSymbol)}&metric=all&token=${token}`, 3600),
+    ]);
+
+    const metricData = metrics?.metric || {};
+    
+    return {
+      symbol: normalizedSymbol,
+      company: profile?.name || normalizedSymbol,
+      sector: profile?.finnhubIndustry || 'N/A',
+      price: quote?.c || 0,
+      change: quote?.dp || 0,
+      marketCap: profile?.marketCapitalization || 0,
+      peRatio: metricData?.peNormalizedAnnual || metricData?.peBasicExclExtraTTM || null,
+      high52w: metricData?.['52WeekHigh'] || null,
+      low52w: metricData?.['52WeekLow'] || null,
+      eps: metricData?.epsBasicExclExtraTTM || null,
+      volume: quote?.v || 0,
+    };
+  } catch (err) {
+    console.error(`Error fetching metrics for ${symbol}:`, err);
+    return null;
+  }
+};
+
+export const getStockMetricsBatch = async (symbols: string[]) => {
+  const results = await Promise.all(
+    symbols.map(symbol => getStockMetrics(symbol))
+  );
+  return results.filter(result => result !== null);
+};
+
+export const getHistoricalPrices = async (symbol: string, days: number = 30) => {
+  try {
+    const token = process.env.FINNHUB_API_KEY ?? NEXT_PUBLIC_FINNHUB_API_KEY;
+    if (!token) {
+      throw new Error('FINNHUB API key is not configured');
+    }
+
+    const endDate = new Date();
+    const startDate = new Date();
+    startDate.setDate(startDate.getDate() - days);
+    
+    const from = Math.floor(startDate.getTime() / 1000);
+    const to = Math.floor(endDate.getTime() / 1000);
+
+    const url = `${FINNHUB_BASE_URL}/stock/candle?symbol=${encodeURIComponent(symbol)}&resolution=D&from=${from}&to=${to}&token=${token}`;
+    const data = await fetchJSON<any>(url, 3600);
+
+    if (data.s === 'ok' && data.c) {
+      return data.t.map((timestamp: number, index: number) => ({
+        date: new Date(timestamp * 1000).toLocaleDateString(),
+        [symbol]: data.c[index],
+      }));
+    }
+    
+    return [];
+  } catch (err) {
+    console.error(`Error fetching historical prices for ${symbol}:`, err);
+    return [];
+  }
+};
+
+export const getHistoricalPricesBatch = async (symbols: string[], days: number = 30) => {
+  const results = await Promise.all(
+    symbols.map(async (symbol) => {
+      const data = await getHistoricalPrices(symbol, days);
+      return { symbol, data };
+    })
+  );
+  
+  // Merge price data by date
+  const mergedData: any[] = [];
+  const dateMap: { [key: string]: any } = {};
+  
+  for (const result of results) {
+    for (const entry of result.data) {
+      if (!dateMap[entry.date]) {
+        dateMap[entry.date] = { date: entry.date };
+      }
+      dateMap[entry.date][result.symbol] = entry[result.symbol];
+    }
+  }
+  
+  return Object.values(dateMap);
+};
+
+
+export const getEarningsCalendar = async (symbols: string[], from: string, to: string) => {
+  try {
+    const token = process.env.FINNHUB_API_KEY ?? NEXT_PUBLIC_FINNHUB_API_KEY;
+    if (!token) {
+      throw new Error('FINNHUB API key is not configured');
+    }
+
+    const url = `${FINNHUB_BASE_URL}/calendar/earnings?from=${from}&to=${to}&token=${token}`;
+    const data = await fetchJSON<any>(url, 3600);
+
+    if (data && data.earningsCalendar) {
+      // Filter to only include requested symbols
+      const symbolSet = new Set(symbols.map(s => s.toUpperCase()));
+      return data.earningsCalendar.filter((item: any) => 
+        symbolSet.has(item.symbol.toUpperCase())
+      );
+    }
+    
+    return [];
+  } catch (err) {
+    console.error('Error fetching earnings calendar:', err);
+    return [];
+  }
+};
+
+export const getIPOCalendar = async (from: string, to: string) => {
+  try {
+    const token = process.env.FINNHUB_API_KEY ?? NEXT_PUBLIC_FINNHUB_API_KEY;
+    if (!token) {
+      throw new Error('FINNHUB API key is not configured');
+    }
+
+    const url = `${FINNHUB_BASE_URL}/calendar/ipo?from=${from}&to=${to}&token=${token}`;
+    const data = await fetchJSON<any>(url, 3600);
+
+    return data || [];
+  } catch (err) {
+    console.error('Error fetching IPO calendar:', err);
+    return [];
+  }
+};
+
+export const getEconomicCalendar = async () => {
+  try {
+    const token = process.env.FINNHUB_API_KEY ?? NEXT_PUBLIC_FINNHUB_API_KEY;
+    if (!token) {
+      throw new Error('FINNHUB API key is not configured');
+    }
+
+    const url = `${FINNHUB_BASE_URL}/calendar/economic?token=${token}`;
+    const data = await fetchJSON<any>(url, 3600);
+
+    return data || [];
+  } catch (err: any) {
+    if (err.message?.includes("403")) {
+      console.warn("Economic calendar isn't available on your Finnhub plan.");
+      return [];
+    }
+
+    console.error(err);
+    return [];
+  } 
+};

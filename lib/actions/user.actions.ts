@@ -2,6 +2,8 @@
 
 import {connectToDatabase} from "@/database/mongoose";
 
+import { getSubscribedUsers } from '@/lib/actions/emailPreferences.actions';
+
 export const getAllUsersForNewsEmail = async () => {
     try {
         const mongoose = await connectToDatabase();
