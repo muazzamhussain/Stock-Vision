@@ -70,7 +70,7 @@ export default function SearchCommand({ renderAs = 'button', label = 'Add stock'
           <CommandInput value={searchTerm} onValueChange={setSearchTerm} placeholder="Search stocks..." className="search-input" />
           {loading && <Loader2 className="search-loader" />}
         </div>
-        <CommandList className="search-list">
+        <CommandList className="search-list scrollbar-thin scrollbar-thumb-slate-400 scrollbar-track-slate-800 scroll scrollbar-hide">
           {loading ? (
               <CommandEmpty className="search-list-empty">Loading stocks...</CommandEmpty>
           ) : displayStocks?.length === 0 ? (

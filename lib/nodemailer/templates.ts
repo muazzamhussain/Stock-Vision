@@ -1108,3 +1108,63 @@ export const INACTIVE_USER_REMINDER_EMAIL_TEMPLATE = `<!DOCTYPE html>
     </table>
 </body>
 </html>`;
+
+
+export const PRICE_ALERT_EMAIL_TEMPLATE = `
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Price Alert - Stock Vision</title>
+</head>
+<body style="margin:0;padding:0;background-color:#050505;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
+  <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width:600px;margin:0 auto;background-color:#141414;border-radius:12px;overflow:hidden;margin-top:20px;margin-bottom:20px;">
+    <tr>
+      <td style="padding:40px 30px;text-align:center;background:linear-gradient(135deg,#1a1a1a 0%,#141414 100%);border-bottom:2px solid #FDD458;">
+        <h1 style="color:#FDD458;font-size:28px;font-weight:700;margin:0;letter-spacing:-0.5px;">🔔 Price Alert</h1>
+        <p style="color:#CCDADC;font-size:16px;margin:8px 0 0 0;">Your stock just hit your target price</p>
+      </td>
+    </tr>
+    <tr>
+      <td style="padding:40px 30px;">
+        <div style="background-color:#212328;padding:24px;border-radius:8px;margin-bottom:24px;">
+          <h2 style="color:#FFFFFF;font-size:24px;margin:0 0 8px 0;font-weight:600;">{{symbol}}</h2>
+          <p style="color:#CCDADC;font-size:16px;margin:0 0 16px 0;">{{company}}</p>
+          
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:20px;">
+            <div style="background-color:#141414;padding:16px;border-radius:6px;text-align:center;">
+              <p style="color:#9095A1;font-size:12px;margin:0 0 4px 0;text-transform:uppercase;letter-spacing:0.5px;">Current Price</p>
+              <p style="color:#FFFFFF;font-size:22px;font-weight:600;margin:0;">{{currentPrice}}</p>
+            </div>
+            <div style="background-color:#141414;padding:16px;border-radius:6px;text-align:center;">
+              <p style="color:#9095A1;font-size:12px;margin:0 0 4px 0;text-transform:uppercase;letter-spacing:0.5px;">Target Price</p>
+              <p style="color:#FDD458;font-size:22px;font-weight:600;margin:0;">{{targetPrice}}</p>
+            </div>
+          </div>
+          
+          <div style="text-align:center;margin-top:20px;padding:12px;background-color:#141414;border-radius:6px;border-left:4px solid #FDD458;">
+            <p style="color:#CCDADC;font-size:16px;margin:0;">
+              Price is <strong style="color:#FDD458;">{{condition}}</strong> your target
+            </p>
+          </div>
+        </div>
+        
+        <div style="text-align:center;padding:16px;background-color:#212328;border-radius:8px;">
+          <a href="{{stockUrl}}" style="display:inline-block;background-color:#FDD458;color:#050505;text-decoration:none;padding:12px 32px;border-radius:6px;font-weight:600;font-size:16px;">View Stock Details</a>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td style="padding:20px 30px;background-color:#050505;border-top:1px solid #30333A;text-align:center;">
+        <p style="color:#9095A1;font-size:12px;margin:0 0 8px 0;">
+          You're receiving this because you set a price alert on Stock Vision.
+        </p>
+        <a href="{{unsubscribeUrl}}" style="color:#9095A1;font-size:12px;text-decoration:underline;">Unsubscribe from all emails</a>
+        <p style="color:#606570;font-size:11px;margin:8px 0 0 0;">© 2026 Stock Vision</p>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
+`;

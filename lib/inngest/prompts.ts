@@ -229,3 +229,32 @@ EXAMPLES:
 
 Your response must be valid JSON only. Do not include any other text.`
 
+
+export const SENTIMENT_ANALYSIS_PROMPT = `You are a financial sentiment analysis expert. Analyze the following news headlines and provide a comprehensive sentiment assessment.
+
+News headlines:
+{{newsHeadlines}}
+
+Analyze the sentiment and return ONLY a valid JSON object with this exact structure:
+{
+  "score": number (1-10, where 1 is extremely bearish, 10 is extremely bullish),
+  "label": "Bullish" or "Bearish" or "Neutral",
+  "summary": "A concise 2-3 sentence summary of the overall sentiment",
+  "keyFactors": ["factor1", "factor2", "factor3"] (3-5 key factors driving the sentiment)
+}
+
+Requirements:
+- Score must be an integer between 1 and 10
+- Label must be exactly one of: "Bullish", "Bearish", "Neutral"
+- Summary should be 2-3 sentences in plain English
+- Key factors should be 3-5 concise bullet points as strings
+- Return ONLY the JSON object, no other text
+- Base your analysis solely on the provided headlines
+
+Example response:
+{
+  "score": 7,
+  "label": "Bullish",
+  "summary": "Strong earnings and positive forward guidance indicate robust growth potential for the company. Market analysts are optimistic about future performance.",
+  "keyFactors": ["Better than expected earnings", "Positive revenue growth", "Strong forward guidance", "Industry tailwinds"]
+}`;

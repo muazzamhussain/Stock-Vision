@@ -1,30 +1,66 @@
-'use client';
-import { useEffect, useRef }     from "react";
+"use client";
 
-const useTradingViewWidget = (scriptUrl: string, config: Record<string, unknown>, height = 600) => {
-    const containerRef = useRef<HTMLDivElement | null>(null);
+import { useEffect, useRef } from "react";
 
-    useEffect(() => {
-        if (!containerRef.current) return;
-        if (containerRef.current.dataset.loaded) return;
-        containerRef.current.innerHTML = `<div class="tradingview-widget-container__widget" style="width: 100%; height: ${height}px;"></div>`;
+const useTradingViewWidget = (
+  scriptUrl: string,
+  config: Record<string, unknown>,
+  height: number | string = 600
+) => {
+  const containerRef = useRef<HTMLDivElement | null>(null);
 
-        const script = document.createElement("script");
-        script.src = scriptUrl;
-        script.async = true;
-        script.innerHTML = JSON.stringify(config);
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
 
-        containerRef.current.appendChild(script);
-        containerRef.current.dataset.loaded = 'true';
+    const resolvedHeight =
+      typeof height === "number" ? `${height}px` : height;
 
-        return () => {
-            if(containerRef.current) {
-                containerRef.current.innerHTML = '';
-                delete containerRef.current.dataset.loaded;
-            }
-        }
-    }, [scriptUrl, config, height])
+    const numericHeight =
+      typeof height === "number"
+        ? height
+        : Number.parseInt(height, 10) || 600;
 
-    return containerRef;
-}
-export default useTradingViewWidget
+    // ✅ Important: clear old widget so height can update
+    container.innerHTML = "";
+    delete container.dataset.loaded;
+
+    // ✅ Set container size dynamically
+    container.style.width = "100%";
+    container.style.height = resolvedHeight;
+
+    // Widget placeholder
+    const widget = document.createElement("div");
+    widget.className = "tradingview-widget-container__widget";
+    widget.style.width = "100%";
+    widget.style.height = "100%";
+
+    // Script
+    const script = document.createElement("script");
+    script.src = scriptUrl;
+    script.async = true;
+    script.type = "text/javascript";
+
+    // ✅ Override config height here
+    script.innerHTML = JSON.stringify({
+      ...config,
+      width: "100%",
+      height: numericHeight,
+    });
+
+    container.appendChild(widget);
+    container.appendChild(script);
+    container.dataset.loaded = "true";
+
+    return () => {
+      if (container) {
+        container.innerHTML = "";
+        delete container.dataset.loaded;
+      }
+    };
+  }, [scriptUrl, height, JSON.stringify(config)]);
+
+  return containerRef;
+};
+
+export default useTradingViewWidget;
