@@ -1,4 +1,4 @@
-import { Schema, model, models, type Document, type Model } from 'mongoose';
+import { Schema, model, models, type Document, type Model } from "mongoose";
 
 export interface EmailPreferences extends Document {
   userId: string;
@@ -16,12 +16,11 @@ const EmailPreferencesSchema = new Schema<EmailPreferences>(
     unsubscribeToken: { type: String, required: true, unique: true },
     createdAt: { type: Date, default: Date.now },
   },
-  { timestamps: false }
+  { timestamps: false },
 );
 
-EmailPreferencesSchema.index({ unsubscribeToken: 1 });
 EmailPreferencesSchema.index({ isSubscribed: 1 });
 
 export const EmailPreferences: Model<EmailPreferences> =
   (models?.EmailPreferences as Model<EmailPreferences>) ||
-  model<EmailPreferences>('EmailPreferences', EmailPreferencesSchema);
+  model<EmailPreferences>("EmailPreferences", EmailPreferencesSchema);
