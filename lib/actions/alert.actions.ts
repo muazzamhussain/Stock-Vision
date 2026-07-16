@@ -1,10 +1,11 @@
-'use server';
+"use server";
 
-import { connectToDatabase } from '@/database/mongoose';
-import { PriceAlert } from '@/database/models/priceAlert.model';
-import { auth } from '@/lib/better-auth/auth';
-import { headers } from 'next/headers';
-import { inngest } from '@/lib/inngest/client';
+import { connectToDatabase } from "@/database/mongoose";
+import { PriceAlert } from "@/database/models/priceAlert.model";
+import { auth } from "@/lib/better-auth/auth";
+import { headers } from "next/headers";
+import { inngest } from "@/lib/inngest/client";
+import {revalidatePath} from "next/cache";
 
 async function getCurrentUser() {
   const session = await auth?.api.getSession({ headers: await headers() });
@@ -15,22 +16,23 @@ export const createAlert = async (
   symbol: string,
   company: string,
   targetPrice: number,
-  condition: "above" | "below"
+  condition: "above" | "below",
 ) => {
   const user = await getCurrentUser();
   if (!user?.email) {
-    return { success: false, error: 'Please sign in to create alerts.' };
+    return { success: false, error: "Please sign in to create alerts." };
   }
 
   const normalizedSymbol = symbol?.trim().toUpperCase();
-  const normalizedCompany = company?.trim() || normalizedSymbol || 'Unknown company';
+  const normalizedCompany =
+    company?.trim() || normalizedSymbol || "Unknown company";
 
   if (!normalizedSymbol) {
-    return { success: false, error: 'A stock symbol is required.' };
+    return { success: false, error: "A stock symbol is required." };
   }
 
   if (!targetPrice || targetPrice <= 0) {
-    return { success: false, error: 'Please enter a valid target price.' };
+    return { success: false, error: "Please enter a valid target price." };
   }
 
   try {
@@ -47,29 +49,35 @@ export const createAlert = async (
 
     return { success: true, alert };
   } catch (err) {
-    console.error('createAlert error:', err);
-    return { success: false, error: 'Could not create price alert.' };
+    console.error("createAlert error:", err);
+    return { success: false, error: "Could not create price alert." };
   }
 };
 
 export const deleteAlert = async (alertId: string) => {
   const user = await getCurrentUser();
   if (!user?.email) {
-    return { success: false, error: 'Please sign in to delete alerts.' };
+    return { success: false, error: "Please sign in to delete alerts." };
   }
 
   try {
     await connectToDatabase();
-    const result = await PriceAlert.deleteOne({ _id: alertId, userId: user.id });
+    const result = await PriceAlert.deleteOne({
+      _id: alertId,
+      userId: user.id,
+    });
 
     if (result.deletedCount === 0) {
-      return { success: false, error: 'Alert not found or you do not have permission to delete it.' };
+      return {
+        success: false,
+        error: "Alert not found or you do not have permission to delete it.",
+      };
     }
 
     return { success: true };
   } catch (err) {
-    console.error('deleteAlert error:', err);
-    return { success: false, error: 'Could not delete price alert.' };
+    console.error("deleteAlert error:", err);
+    return { success: false, error: "Could not delete price alert." };
   }
 };
 
@@ -87,7 +95,7 @@ export const getUserAlerts = async () => {
 
     return alerts;
   } catch (err) {
-    console.error('getUserAlerts error:', err);
+    console.error("getUserAlerts error:", err);
     return [];
   }
 };
@@ -97,12 +105,12 @@ export const markAlertTriggered = async (alertId: string) => {
     await connectToDatabase();
     const result = await PriceAlert.updateOne(
       { _id: alertId },
-      { $set: { isTriggered: true } }
+      { $set: { isTriggered: true } },
     );
 
     return result.modifiedCount > 0;
   } catch (err) {
-    console.error('markAlertTriggered error:', err);
+    console.error("markAlertTriggered error:", err);
     return false;
   }
 };
@@ -110,12 +118,64 @@ export const markAlertTriggered = async (alertId: string) => {
 export const getUntriggeredAlerts = async () => {
   try {
     await connectToDatabase();
-    const alerts = await PriceAlert.find({ isTriggered: false })
-      .lean();
+    const alerts = await PriceAlert.find({ isTriggered: false }).lean();
 
     return alerts;
   } catch (err) {
-    console.error('getUntriggeredAlerts error:', err);
+    console.error("getUntriggeredAlerts error:", err);
     return [];
+  }
+};
+
+export const updateAlert = async (
+  alertId: string,
+  targetPrice: number,
+  condition: "above" | "below",
+  status: "active" | "triggered"
+) => {
+  try {
+    if (!alertId) {
+      return { success: false, error: "Invalid alert ID." };
+    }
+
+    if (!targetPrice || targetPrice <= 0) {
+      return { success: false, error: "Invalid target price." };
+    }
+
+    if (!["above", "below"].includes(condition)) {
+      return { success: false, error: "Invalid condition." };
+    }
+
+    if (!["active", "triggered"].includes(status)) {
+      return { success: false, error: "Invalid status." };
+    }
+
+    const isTriggered = status === "triggered" ? true : false;
+
+    await connectToDatabase();
+
+    const updatedAlert = await PriceAlert.findByIdAndUpdate(
+      alertId,
+      {
+        targetPrice,
+        condition,
+
+        // Optional: when edited, make alert active again
+        isTriggered,
+        triggeredAt: null,
+      },
+      { new: true },
+    );
+
+    if (!updatedAlert) {
+      return { success: false, error: "Alert not found." };
+    }
+
+    revalidatePath("/alerts");
+
+    return { success: true, alert: JSON.parse(JSON.stringify(updatedAlert)) };
+  } catch (error) {
+    console.error("updateAlert error:", error);
+    return { success: false, error: "Failed to update alert." };
   }
 };
