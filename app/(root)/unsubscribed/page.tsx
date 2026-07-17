@@ -9,7 +9,8 @@ import { CheckCircle, XCircle } from "lucide-react";
 const UnsubscribedPage = () => {
   const searchParams = useSearchParams();
   const token = searchParams.get("token");
-  const resubscribed = searchParams.get("resubscribed") === "true";
+  const initialResubscribed = searchParams.get("resubscribed") === "true";
+  const [isResubscribed, setIsResubscribed] = useState(initialResubscribed);
   const [email, setEmail] = useState<string>("");
 
   useEffect(() => {
@@ -22,14 +23,14 @@ const UnsubscribedPage = () => {
 
   const handleResubscribe = async () => {
     if (!token) return;
-    
+
     try {
       const response = await fetch(`/api/unsubscribe?token=${token}`, {
         method: "POST",
       });
-      
+
       if (response.ok) {
-        window.location.reload();
+        setIsResubscribed(true);
       }
     } catch (error) {
       console.error("Failed to resubscribe:", error);
@@ -37,9 +38,9 @@ const UnsubscribedPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-900 flex items-center justify-center px-4">
+    <div className="fixed-inset-0 bg-gray-900 flex items-center justify-center px-4">
       <div className="max-w-md w-full bg-gray-800 rounded-lg border border-white/10 p-8 text-center">
-        {resubscribed ? (
+        {isResubscribed ? (
           <>
             <div className="flex justify-center mb-4">
               <CheckCircle className="h-16 w-16 text-green-500" />
@@ -51,9 +52,7 @@ const UnsubscribedPage = () => {
               You will now continue to receive email updates from Stock Vision.
             </p>
             <Link href="/">
-              <Button className="yellow-btn w-full">
-                Return to Dashboard
-              </Button>
+              <Button className="yellow-btn w-full">Return to Dashboard</Button>
             </Link>
           </>
         ) : (
@@ -64,17 +63,12 @@ const UnsubscribedPage = () => {
             <h1 className="text-2xl font-bold text-white mb-2">
               You've Been Unsubscribed
             </h1>
-            <p className="text-gray-400 mb-2">
-              {email && `(${email})`}
-            </p>
+            <p className="text-gray-400 mb-2">{email && `(${email})`}</p>
             <p className="text-gray-500 text-sm mb-6">
               You will no longer receive email updates from Stock Vision.
             </p>
             <div className="space-y-3">
-              <Button
-                onClick={handleResubscribe}
-                className="yellow-btn w-full"
-              >
+              <Button onClick={handleResubscribe} className="yellow-btn w-full">
                 Resubscribe
               </Button>
               <Link href="/">

@@ -12,6 +12,9 @@ const Footer = () => {
           <Link href="/watchlist" className="transition hover:text-yellow-500">
             Watchlist
           </Link>
+          <Link href="/alerts" className="transition hover:text-yellow-500">
+            Alerts
+          </Link>
         </div>
       </div>
     </footer>

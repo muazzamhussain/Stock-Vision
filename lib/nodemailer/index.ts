@@ -15,11 +15,13 @@ export const sendWelcomeEmail = async ({
   intro,
   unsubscribeToken,
 }: WelcomeEmailData & { unsubscribeToken: string }) => {
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL;
   const unsubscribeUrl = `${process.env.NEXT_PUBLIC_APP_URL}/api/unsubscribe?token=${unsubscribeToken}`;
   
   const htmlTemplate = WELCOME_EMAIL_TEMPLATE
     .replace('{{name}}', name)
     .replace('{{intro}}', intro)
+    .replace('{{appUrl}}', appUrl!)
     .replace('{{unsubscribeUrl}}', unsubscribeUrl);
 
   const mailOptions = {
@@ -37,11 +39,13 @@ export const sendNewsSummaryEmail = async (
   { email, date, newsContent, unsubscribeToken }: 
   { email: string; date: string; newsContent: string; unsubscribeToken: string }
 ): Promise<void> => {
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL;
   const unsubscribeUrl = `${process.env.NEXT_PUBLIC_APP_URL}/api/unsubscribe?token=${unsubscribeToken}`;
   
   const htmlTemplate = NEWS_SUMMARY_EMAIL_TEMPLATE
     .replace('{{date}}', date)
     .replace('{{newsContent}}', newsContent)
+    .replace('{{appUrl}}', appUrl!)
     .replace('{{unsubscribeUrl}}', unsubscribeUrl);
 
   const mailOptions = {
@@ -73,6 +77,7 @@ export const sendAlertEmail = async ({
   currentPrice: number;
   unsubscribeToken: string;
 }) => {
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL;
   const unsubscribeUrl = `${process.env.NEXT_PUBLIC_APP_URL}/api/unsubscribe?token=${unsubscribeToken}`;
   
   const htmlTemplate = PRICE_ALERT_EMAIL_TEMPLATE
@@ -82,6 +87,7 @@ export const sendAlertEmail = async ({
     .replace('{{condition}}', condition === 'above' ? 'above' : 'below')
     .replace('{{currentPrice}}', currentPrice.toFixed(2))
     .replace('{{stockUrl}}', `${process.env.NEXT_PUBLIC_APP_URL}/stocks/${symbol}`)
+    .replace('{{appUrl}}', appUrl!)
     .replace('{{unsubscribeUrl}}', unsubscribeUrl);
 
   const mailOptions = {

@@ -14,7 +14,7 @@ export const signUpWithEmail = async ({
     preferredIndustry,
 }: SignUpFormData) => {
     try {
-        const response = await auth.api.signUpEmail({
+        const response = await auth?.api.signUpEmail({
             body: { email, password, name: fullName },
         });
 
@@ -22,6 +22,7 @@ export const signUpWithEmail = async ({
             await inngest.send({
                 name: "app/user.created",
                 data: {
+                    userId: response.user.id,
                     email,
                     name: fullName,
                     country,
@@ -56,7 +57,7 @@ export const signUpWithEmail = async ({
 
 export const signInWithEmail = async ({ email, password }: SignInFormData) => {
     try {
-        const response = await auth.api.signInEmail({ body: { email, password } });
+        const response = await auth?.api.signInEmail({ body: { email, password } });
 
         if (!response || !response.user) {
             return {
@@ -88,7 +89,7 @@ export const signInWithEmail = async ({ email, password }: SignInFormData) => {
 
 export const signOut = async () => {
   try {
-    await auth.api.signOut({ headers: await headers() });
+    await auth?.api.signOut({ headers: await headers() });
   } catch (e) {
     console.log("Sign out failed", e);
     return { success: false, error: "Sign out failed" };

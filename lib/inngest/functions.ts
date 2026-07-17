@@ -16,6 +16,7 @@ import { getEmailPreferencesByUserId } from "@/lib/actions/emailPreferences.acti
 import { sendAlertEmail } from "@/lib/nodemailer";
 import { saveSentimentResult } from "@/lib/actions/sentiment.actions";
 import { SENTIMENT_ANALYSIS_PROMPT } from "@/lib/inngest/prompts";
+import { getOrCreateEmailPreferences } from "@/lib/actions/emailPreferences.actions";
 
 export const sendSignUpEmail = inngest.createFunction(
   {
@@ -24,6 +25,7 @@ export const sendSignUpEmail = inngest.createFunction(
   },
   async ({ event, step }) => {
     const data = event.data as {
+      userId: string;
       email: string;
       name: string;
       country: string;
@@ -33,11 +35,11 @@ export const sendSignUpEmail = inngest.createFunction(
     };
 
     const userProfile = `
-            - Country: ${data.country}
-            - Investment goals: ${data.investmentGoals}
-            - Risk tolerance: ${data.riskTolerance}
-            - Preferred industry: ${data.preferredIndustry}
-        `;
+- Country: ${data.country}
+- Investment goals: ${data.investmentGoals}
+- Risk tolerance: ${data.riskTolerance}
+- Preferred industry: ${data.preferredIndustry}
+`;
 
     const prompt = PERSONALIZED_WELCOME_EMAIL_PROMPT.replace(
       "{{userProfile}}",
@@ -56,26 +58,30 @@ export const sendSignUpEmail = inngest.createFunction(
       },
     });
 
-    await step.run("send-welcome-email", async () => {
-      const part = response.candidates?.[0]?.content?.parts?.[0];
-      const introText =
-        (part && "text" in part ? part.text : null) ||
-        "Thanks for joining Stock Vision. You now have the tools to track markets and make smarter moves.";
+    const part = response.candidates?.[0]?.content?.parts?.[0];
 
+    const introText =
+      (part && "text" in part ? part.text : null) ??
+      "Thanks for joining Stock Vision. You now have the tools to track markets and make smarter moves.";
+
+    const prefs = await step.run(
+      "create-email-preferences",
+      async () => {
+        return await getOrCreateEmailPreferences(
+          data.userId,
+          data.email
+        );
+      }
+    );
+
+    await step.run("send-welcome-email", async () => {
       return await sendWelcomeEmail({
         email: data.email,
         name: data.name,
         intro: introText,
+        unsubscribeToken: prefs?.unsubscribeToken,
       });
     });
-
-    await step.run("create-email-preferences", async () => {
-      const { getOrCreateEmailPreferences } =
-        await import("@/lib/actions/emailPreferences.actions");
-      await getOrCreateEmailPreferences(userId, data.email);
-    });
-
-    const prefs = await getOrCreateEmailPreferences(userId, data.email);
 
     return {
       success: true,
