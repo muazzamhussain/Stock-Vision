@@ -73,27 +73,27 @@ Stock Vision is a full-stack financial platform built with **Next.js 15** and th
 ## Architecture
 
 ```
-┌──────────────────────────────────────────────────────────┐
-│                        Client UI                          │
-│  Search • Screener • Stock Pages • Watchlist • Alerts     │
+┌────────────────────────────────────────────────────────────┐
+│                        Client UI                           │
+│  Search • Screener • Stock Pages • Watchlist • Alerts      │
 └───────────────────────────┬────────────────────────────────┘
                              │
-┌────────────────────────────▼────────────────────────────────┐
-│                 Next.js Server Actions (lib/actions)          │
-│  auth • user • watchlist • alert • chart • sentiment          │
-│  • emailPreferences                                           │
-└──────────┬────────────────────────────────┬───────────────────┘
+┌────────────────────────────▼─────────────────────────────────────────────────┐
+│                 Next.js Server Actions (lib/actions)                         │
+│  auth • user • watchlist • alert • chart • sentiment  • emailPreferences     │
+│                                                                              │
+└──────────┬────────────────────────────────┬──────────────────────────────────┘
            │                                │
-   ┌───────▼────────┐              ┌────────▼─────────┐
+   ┌───────▼─────────┐              ┌────────▼──────────┐
    │  Better Auth    │              │     MongoDB       │
    │ (sessions/auth) │              │ (models/schemas)  │
    └─────────────────┘              └───────────────────┘
            │
 ┌───────────▼─────────────────────────────────────────────────┐
-│                  Inngest Event Layer                          │
-│   Sentiment Analysis Job  •  Email/Digest Workflows            │
-│                     ↓ Gemini AI ↓                              │
-│                  Nodemailer (SMTP)                             │
+│                  Inngest Event Layer                        │
+│   Sentiment Analysis Job  •  Email/Digest Workflows         │
+│                     ↓ Gemini AI ↓                           │
+│                  Nodemailer (SMTP)                          │
 └─────────────────────────────────────────────────────────────┘
 ```
 
