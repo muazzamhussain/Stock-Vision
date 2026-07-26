@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import { saveChartConfig, getChartConfig } from "@/lib/actions/chart.actions";
 import { Save, X } from "lucide-react";
+import { symbol } from "better-auth";
 
 const INDICATORS = [
   { value: "RSI", label: "RSI" },
@@ -18,7 +19,12 @@ const INDICATORS = [
   { value: "VWAP", label: "VWAP" },
 ];
 
-const ChartConfigPanel = ({ symbol }: { symbol: string }) => {
+interface ChartConfigPanelProps {
+  symbol: string;
+  onSave?: (indicators: string[], notes: string) => void;
+}
+
+const ChartConfigPanel = ({ symbol, onSave }: ChartConfigPanelProps) => {
   const [selectedIndicators, setSelectedIndicators] = useState<string[]>([]);
   const [notes, setNotes] = useState("");
   const [saving, setSaving] = useState(false);
@@ -45,7 +51,7 @@ const ChartConfigPanel = ({ symbol }: { symbol: string }) => {
     setSelectedIndicators((prev) =>
       prev.includes(indicator)
         ? prev.filter((i) => i !== indicator)
-        : [...prev, indicator]
+        : [...prev, indicator],
     );
   };
 
@@ -55,6 +61,7 @@ const ChartConfigPanel = ({ symbol }: { symbol: string }) => {
       const result = await saveChartConfig(symbol, selectedIndicators, notes);
       if (result.success) {
         toast.success("Chart configuration saved.");
+        if (onSave) onSave(selectedIndicators, notes);
       } else {
         toast.error(result.error || "Failed to save configuration.");
       }
@@ -79,8 +86,10 @@ const ChartConfigPanel = ({ symbol }: { symbol: string }) => {
 
   return (
     <div className="rounded-lg border border-white/10 bg-white/5 p-6">
-      <h3 className="text-lg font-semibold text-white mb-4">Technical Indicators & Notes</h3>
-      
+      <h3 className="text-lg font-semibold text-white mb-4">
+        Technical Indicators & Notes
+      </h3>
+
       <div className="space-y-4">
         <div>
           <Label className="text-sm text-gray-400 mb-2 block">
