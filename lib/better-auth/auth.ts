@@ -2,8 +2,10 @@ import { betterAuth } from "better-auth";
 import { mongodbAdapter} from "better-auth/adapters/mongodb";
 import { connectToDatabase} from "@/database/mongoose";
 import { nextCookies} from "better-auth/next-js";
+import { sendResetPasswordEmail } from "../nodemailer";
 
-let authInstance: ReturnType<typeof betterAuth> | null = null;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+let authInstance: any = null;
 
 export const getAuth = async () => {
     if(authInstance) return authInstance;
@@ -24,6 +26,9 @@ export const getAuth = async () => {
             minPasswordLength: 8,
             maxPasswordLength: 128,
             autoSignIn: true,
+            sendResetPassword: async({user, url, token}: {user: {email: string}; url: string; token: string})=>{
+                await sendResetPasswordEmail({email: user.email, resetUrl: url});
+            },
         },
         plugins: [nextCookies()],
     });

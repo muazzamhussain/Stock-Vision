@@ -8,6 +8,7 @@ import { signInWithEmail, signUpWithEmail } from "@/lib/actions/auth.actions";
 import { toast } from "sonner";
 import { signInEmail } from "better-auth/api";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const SignIn = () => {
   const router = useRouter();
@@ -23,25 +24,25 @@ const SignIn = () => {
     mode: "onBlur",
   });
 
- const onSubmit = async (data: SignInFormData) => {
+  const onSubmit = async (data: SignInFormData) => {
     try {
-        const result = await signInWithEmail(data);
+      const result = await signInWithEmail(data);
 
-        if (result.success) {
-            router.push('/');
-        } else {
-            // ✅ Handle unsuccessful login
-            toast.error('Sign in failed', {
-                description: result.error || 'Invalid email or password.',
-            });
-        }
-    } catch (e) {
-        console.error(e);
-        toast.error('Sign in failed', {
-            description: e instanceof Error ? e.message : 'Failed to sign in.',
+      if (result.success) {
+        router.push("/");
+      } else {
+        // ✅ Handle unsuccessful login
+        toast.error("Sign in failed", {
+          description: result.error || "Invalid email or password.",
         });
+      }
+    } catch (e) {
+      console.error(e);
+      toast.error("Sign in failed", {
+        description: e instanceof Error ? e.message : "Failed to sign in.",
+      });
     }
-};
+  };
 
   return (
     <>
@@ -86,6 +87,15 @@ const SignIn = () => {
         >
           {isSubmitting ? "Signing In" : "Sign In"}
         </Button>
+
+        <div className="text-right mt-2">
+          <Link
+            href="/forgot-password"
+            className="text-sm text-gray-400 hover:text-yellow-400 transition-colors"
+          >
+            Forgot password?
+          </Link>
+        </div>
 
         <FooterLink
           text="Don't have an account?"

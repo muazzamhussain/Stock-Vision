@@ -1109,62 +1109,386 @@ export const INACTIVE_USER_REMINDER_EMAIL_TEMPLATE = `<!DOCTYPE html>
 </body>
 </html>`;
 
-
-export const PRICE_ALERT_EMAIL_TEMPLATE = `
-<!DOCTYPE html>
-<html>
+export const PRICE_ALERT_EMAIL_TEMPLATE = `<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Price Alert - Stock Vision</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="x-apple-disable-message-reformatting">
+    <title>Price Alert - Stock Vision</title>
+    <!--[if mso]>
+    <noscript>
+        <xml>
+            <o:OfficeDocumentSettings>
+                <o:AllowPNG/>
+                <o:PixelsPerInch>96</o:PixelsPerInch>
+            </o:OfficeDocumentSettings>
+        </xml>
+    </noscript>
+    <![endif]-->
+    <style type="text/css">
+        /* Dark mode styles */
+        @media (prefers-color-scheme: dark) {
+            .email-container {
+                background-color: #141414 !important;
+                border: 1px solid #30333A !important;
+            }
+            .dark-bg {
+                background-color: #050505 !important;
+            }
+            .dark-text {
+                color: #ffffff !important;
+            }
+            .dark-text-secondary {
+                color: #9ca3af !important;
+            }
+            .dark-text-muted {
+                color: #6b7280 !important;
+            }
+            .dark-border {
+                border-color: #30333A !important;
+            }
+        }
+
+        @media only screen and (max-width: 600px) {
+            .email-container {
+                width: 100% !important;
+                margin: 0 !important;
+            }
+            .mobile-padding {
+                padding: 24px !important;
+            }
+            .mobile-header-padding {
+                padding: 24px 24px 12px 24px !important;
+            }
+            .mobile-text {
+                font-size: 14px !important;
+                line-height: 1.5 !important;
+            }
+            .mobile-title {
+                font-size: 24px !important;
+                line-height: 1.3 !important;
+            }
+            .mobile-button {
+                width: 100% !important;
+                text-align: center !important;
+            }
+            .mobile-button a {
+                width: calc(100% - 64px) !important;
+                display: block !important;
+                text-align: center !important;
+            }
+            .mobile-outer-padding {
+                padding: 20px 10px !important;
+            }
+            .price-card {
+                width: 100% !important;
+                display: block !important;
+                margin-bottom: 12px !important;
+            }
+        }
+        @media only screen and (max-width: 480px) {
+            .mobile-title {
+                font-size: 22px !important;
+            }
+            .mobile-padding {
+                padding: 15px !important;
+            }
+            .mobile-header-padding {
+                padding: 15px 15px 8px 15px !important;
+            }
+        }
+    </style>
 </head>
-<body style="margin:0;padding:0;background-color:#050505;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
-  <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width:600px;margin:0 auto;background-color:#141414;border-radius:12px;overflow:hidden;margin-top:20px;margin-bottom:20px;">
-    <tr>
-      <td style="padding:40px 30px;text-align:center;background:linear-gradient(135deg,#1a1a1a 0%,#141414 100%);border-bottom:2px solid #FDD458;">
-        <h1 style="color:#FDD458;font-size:28px;font-weight:700;margin:0;letter-spacing:-0.5px;">🔔 Price Alert</h1>
-        <p style="color:#CCDADC;font-size:16px;margin:8px 0 0 0;">Your stock just hit your target price</p>
-      </td>
-    </tr>
-    <tr>
-      <td style="padding:40px 30px;">
-        <div style="background-color:#212328;padding:24px;border-radius:8px;margin-bottom:24px;">
-          <h2 style="color:#FFFFFF;font-size:24px;margin:0 0 8px 0;font-weight:600;">{{symbol}}</h2>
-          <p style="color:#CCDADC;font-size:16px;margin:0 0 16px 0;">{{company}}</p>
-          
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:20px;">
-            <div style="background-color:#141414;padding:16px;border-radius:6px;text-align:center;">
-              <p style="color:#9095A1;font-size:12px;margin:0 0 4px 0;text-transform:uppercase;letter-spacing:0.5px;">Current Price</p>
-              <p style="color:#FFFFFF;font-size:22px;font-weight:600;margin:0;">{{currentPrice}}</p>
-            </div>
-            <div style="background-color:#141414;padding:16px;border-radius:6px;text-align:center;">
-              <p style="color:#9095A1;font-size:12px;margin:0 0 4px 0;text-transform:uppercase;letter-spacing:0.5px;">Target Price</p>
-              <p style="color:#FDD458;font-size:22px;font-weight:600;margin:0;">{{targetPrice}}</p>
-            </div>
-          </div>
-          
-          <div style="text-align:center;margin-top:20px;padding:12px;background-color:#141414;border-radius:6px;border-left:4px solid #FDD458;">
-            <p style="color:#CCDADC;font-size:16px;margin:0;">
-              Price is <strong style="color:#FDD458;">{{condition}}</strong> your target
-            </p>
-          </div>
-        </div>
-        
-        <div style="text-align:center;padding:16px;background-color:#212328;border-radius:8px;">
-          <a href="{{stockUrl}}" style="display:inline-block;background-color:#FDD458;color:#050505;text-decoration:none;padding:12px 32px;border-radius:6px;font-weight:600;font-size:16px;">View Stock Details</a>
-        </div>
-      </td>
-    </tr>
-    <tr>
-      <td style="padding:20px 30px;background-color:#050505;border-top:1px solid #30333A;text-align:center;">
-        <p style="color:#9095A1;font-size:12px;margin:0 0 8px 0;">
-          You're receiving this because you set a price alert on Stock Vision.
-        </p>
-        <a href="{{unsubscribeUrl}}" style="color:#9095A1;font-size:12px;text-decoration:underline;">Unsubscribe from all emails</a>
-        <p style="color:#606570;font-size:11px;margin:8px 0 0 0;">© 2026 Stock Vision</p>
-      </td>
-    </tr>
-  </table>
+<body style="margin: 0; padding: 0; background-color: #050505; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+    <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background-color: #050505;">
+        <tr>
+            <td align="center" class="mobile-outer-padding" style="padding: 40px 20px;">
+                <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" class="email-container" style="max-width: 600px; background-color: #141414; border-radius: 8px; border: 1px solid #30333A;">
+
+                    <!-- Header with Logo -->
+                    <tr>
+                        <td align="left" class="mobile-header-padding" style="padding: 40px 40px 20px 40px;">
+                            <img src="https://res.cloudinary.com/dfivgcj3i/image/upload/v1783532114/logo_i20q9t.png" alt="Stock Vision Logo" width="150" style="max-width: 100%; height: auto;">
+                        </td>
+                    </tr>
+
+                    <!-- Divider -->
+                    <tr>
+                        <td style="padding: 0 40px;">
+                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                                <tr>
+                                    <td style="border-top: 1px solid #30333A;"></td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+
+                    <!-- Main Content -->
+                    <tr>
+                        <td class="mobile-padding" style="padding: 40px 40px 40px 40px;">
+
+                            <!-- Alert Badge -->
+                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin: 0 0 24px 0;">
+                                <tr>
+                                    <td style="background-color: #2a2410; border: 1px solid #FDD458; border-radius: 20px; padding: 6px 16px;">
+                                        <p style="margin: 0; font-size: 13px; font-weight: 600; color: #FDD458; letter-spacing: 0.5px;">
+                                            🔔 PRICE ALERT TRIGGERED
+                                        </p>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <!-- Heading -->
+                            <h1 class="mobile-title dark-text" style="margin: 0 0 10px 0; font-size: 28px; font-weight: 700; color: #ffffff; line-height: 1.2;">
+                                {{symbol}}
+                            </h1>
+
+                            <!-- Company Name -->
+                            <p class="mobile-text dark-text-secondary" style="margin: 0 0 32px 0; font-size: 16px; line-height: 1.6; color: #CCDADC;">
+                                {{company}}
+                            </p>
+
+                            <!-- Price Cards -->
+                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin: 0 0 20px 0;">
+                                <tr>
+                                    <!-- Current Price -->
+                                    <td class="price-card" width="48%" style="background-color: #1a1d23; border: 1px solid #30333A; border-radius: 8px; padding: 20px; text-align: center; vertical-align: top;">
+                                        <p style="margin: 0 0 8px 0; font-size: 11px; font-weight: 600; color: #9095A1; text-transform: uppercase; letter-spacing: 1px;">
+                                            Current Price
+                                        </p>
+                                        <p style="margin: 0; font-size: 26px; font-weight: 700; color: #ffffff; line-height: 1;">
+                                            {{currentPrice}}
+                                        </p>
+                                    </td>
+
+                                    <!-- Spacer -->
+                                    <td width="4%"></td>
+
+                                    <!-- Target Price -->
+                                    <td class="price-card" width="48%" style="background-color: #1c1a10; border: 1px solid #FDD458; border-radius: 8px; padding: 20px; text-align: center; vertical-align: top;">
+                                        <p style="margin: 0 0 8px 0; font-size: 11px; font-weight: 600; color: #9095A1; text-transform: uppercase; letter-spacing: 1px;">
+                                            Your Target
+                                        </p>
+                                        <p style="margin: 0; font-size: 26px; font-weight: 700; color: #FDD458; line-height: 1;">
+                                            {{targetPrice}}
+                                        </p>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <!-- Condition Banner -->
+                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin: 0 0 32px 0;">
+                                <tr>
+                                    <td style="background-color: #1c1a10; border: 1px solid #3d3510; border-left: 4px solid #FDD458; border-radius: 8px; padding: 16px 20px; text-align: center;">
+                                        <p class="mobile-text" style="margin: 0; font-size: 15px; line-height: 1.6; color: #CCDADC;">
+                                            The price is now <strong style="color: #FDD458;">{{condition}}</strong> your target price
+                                        </p>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <!-- CTA Button -->
+                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin: 0 0 40px 0; width: 100%;">
+                                <tr>
+                                    <td align="center">
+                                        <a href="{{stockUrl}}" style="display: block; width: 100%; background: linear-gradient(135deg, #FDD458 0%, #E8BA40 100%); color: #000000; text-decoration: none; padding: 16px 32px; border-radius: 8px; font-size: 16px; font-weight: 600; line-height: 1; text-align: center; box-sizing: border-box;">
+                                            View Stock Details
+                                        </a>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <!-- Footer Text -->
+                            <p class="mobile-text dark-text-muted" style="margin: 40px 0 0 0; font-size: 14px; line-height: 1.5; color: #CCDADC !important; text-align: center;">
+                                Stock Vision HQ, Peshawar, KP, Pakistan<br>
+                                <a href="{{unsubscribeUrl}}" style="color: #CCDADC !important; text-decoration: underline;">Unsubscribe</a> |
+                                <a href="{{appUrl}}" style="color: #CCDADC !important; text-decoration: underline;">Visit Stock Vision</a><br>
+                                © 2026 Stock Vision
+                            </p>
+                        </td>
+                    </tr>
+
+                </table>
+            </td>
+        </tr>
+    </table>
 </body>
-</html>
-`;
+</html>`;
+
+export const RESET_PASSWORD_EMAIL_TEMPLATE = `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="x-apple-disable-message-reformatting">
+    <title>Reset Your Stock Vision Password</title>
+    <!--[if mso]>
+    <noscript>
+        <xml>
+            <o:OfficeDocumentSettings>
+                <o:AllowPNG/>
+                <o:PixelsPerInch>96</o:PixelsPerInch>
+            </o:OfficeDocumentSettings>
+        </xml>
+    </noscript>
+    <![endif]-->
+    <style type="text/css">
+        /* Dark mode styles */
+        @media (prefers-color-scheme: dark) {
+            .email-container {
+                background-color: #141414 !important;
+                border: 1px solid #30333A !important;
+            }
+            .dark-bg {
+                background-color: #050505 !important;
+            }
+            .dark-text {
+                color: #ffffff !important;
+            }
+            .dark-text-secondary {
+                color: #9ca3af !important;
+            }
+            .dark-text-muted {
+                color: #6b7280 !important;
+            }
+            .dark-border {
+                border-color: #30333A !important;
+            }
+        }
+
+        @media only screen and (max-width: 600px) {
+            .email-container {
+                width: 100% !important;
+                margin: 0 !important;
+            }
+            .mobile-padding {
+                padding: 24px !important;
+            }
+            .mobile-header-padding {
+                padding: 24px 24px 12px 24px !important;
+            }
+            .mobile-text {
+                font-size: 14px !important;
+                line-height: 1.5 !important;
+            }
+            .mobile-title {
+                font-size: 24px !important;
+                line-height: 1.3 !important;
+            }
+            .mobile-button {
+                width: 100% !important;
+                text-align: center !important;
+            }
+            .mobile-button a {
+                width: calc(100% - 64px) !important;
+                display: block !important;
+                text-align: center !important;
+            }
+            .mobile-outer-padding {
+                padding: 20px 10px !important;
+            }
+        }
+        @media only screen and (max-width: 480px) {
+            .mobile-title {
+                font-size: 22px !important;
+            }
+            .mobile-padding {
+                padding: 15px !important;
+            }
+            .mobile-header-padding {
+                padding: 15px 15px 8px 15px !important;
+            }
+        }
+    </style>
+</head>
+<body style="margin: 0; padding: 0; background-color: #050505; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+    <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background-color: #050505;">
+        <tr>
+            <td align="center" class="mobile-outer-padding" style="padding: 40px 20px;">
+                <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" class="email-container" style="max-width: 600px; background-color: #141414; border-radius: 8px; border: 1px solid #30333A;">
+
+                    <!-- Header with Logo -->
+                    <tr>
+                        <td align="left" class="mobile-header-padding" style="padding: 40px 40px 20px 40px;">
+                            <img src="https://res.cloudinary.com/dfivgcj3i/image/upload/v1783532114/logo_i20q9t.png" alt="Stock Vision Logo" width="150" style="max-width: 100%; height: auto;">
+                        </td>
+                    </tr>
+
+                    <!-- Divider -->
+                    <tr>
+                        <td style="padding: 0 40px;">
+                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                                <tr>
+                                    <td style="border-top: 1px solid #30333A;"></td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+
+                    <!-- Main Content -->
+                    <tr>
+                        <td class="mobile-padding" style="padding: 40px 40px 40px 40px;">
+
+                            <!-- Heading -->
+                            <h1 class="mobile-title dark-text" style="margin: 0 0 16px 0; font-size: 24px; font-weight: 600; color: #FDD458; line-height: 1.2;">
+                                Reset your password
+                            </h1>
+
+                            <!-- Intro Text -->
+                            <p class="mobile-text dark-text-secondary" style="margin: 0 0 16px 0; font-size: 16px; line-height: 1.6; color: #CCDADC;">
+                                We received a request to reset the password for your Stock Vision account.
+                            </p>
+
+                            <p class="mobile-text dark-text-secondary" style="margin: 0 0 32px 0; font-size: 16px; line-height: 1.6; color: #CCDADC;">
+                                Click the button below to set a new password. This link is valid for
+                                <span style="color: #FDD458; font-weight: 600;">1 hour</span>
+                                and can only be used once.
+                            </p>
+
+                            <!-- CTA Button -->
+                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin: 0 0 32px 0; width: 100%;">
+                                <tr>
+                                    <td align="center">
+                                        <a href="{{resetUrl}}" style="display: block; width: 100%; background: linear-gradient(135deg, #FDD458 0%, #E8BA40 100%); color: #000000; text-decoration: none; padding: 16px 32px; border-radius: 8px; font-size: 16px; font-weight: 600; line-height: 1; text-align: center; box-sizing: border-box;">
+                                            Reset Password
+                                        </a>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <!-- Fallback URL -->
+                            <p class="mobile-text dark-text-muted" style="margin: 0 0 32px 0; font-size: 13px; line-height: 1.6; color: #6b7280;">
+                                If the button doesn't work, copy and paste this link into your browser:<br>
+                                <a href="{{resetUrl}}" style="color: #FDD458; text-decoration: underline; word-break: break-all;">{{resetUrl}}</a>
+                            </p>
+
+                            <!-- Warning Box -->
+                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin: 0 0 40px 0;">
+                                <tr>
+                                    <td style="background-color: #1c1a10; border: 1px solid #3d3510; border-radius: 8px; padding: 16px 20px;">
+                                        <p class="mobile-text" style="margin: 0; font-size: 14px; line-height: 1.6; color: #9ca3af;">
+                                            🔒 <strong style="color: #CCDADC;">Didn't request this?</strong><br>
+                                            If you didn't request a password reset, you can safely ignore this email. Your password will remain unchanged.
+                                        </p>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <!-- Footer Text -->
+                            <p class="mobile-text dark-text-muted" style="margin: 40px 0 0 0; font-size: 14px; line-height: 1.5; color: #CCDADC !important; text-align: center;">
+                                Stock Vision HQ, Peshawar, KP, Pakistan<br>
+                                <a href="{{appUrl}}" style="color: #CCDADC !important; text-decoration: underline;">Visit Stock Vision</a><br>
+                                © 2026 Stock Vision
+                            </p>
+                        </td>
+                    </tr>
+
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>`;

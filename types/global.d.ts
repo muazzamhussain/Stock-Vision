@@ -215,6 +215,15 @@ declare global {
     threshold: number;
     changePercent?: number;
   };
+
+  type ForgotPasswordForm = {
+    email: string;
+  };
+
+  type ResetPasswordForm = {
+    password: string;
+    confirmPassword: string;
+  };
 }
 
 declare module "react" {
@@ -229,7 +238,7 @@ declare module "react" {
     }
   }
 
-    namespace JSX {
+  namespace JSX {
     interface IntrinsicElements {
       "tv-market-summary": React.DetailedHTMLProps<
         React.HTMLAttributes<HTMLElement>,
@@ -241,7 +250,6 @@ declare module "react" {
       };
     }
   }
-
 }
 
 export {};

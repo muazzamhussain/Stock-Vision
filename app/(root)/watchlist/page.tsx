@@ -49,7 +49,7 @@ const page = async () => {
           </p>
         </div>
       ) : (
-        <div className="rounded-2xl border border-white/10 bg-[#141414] p-4 overflow-hidden">
+        <div className="rounded-2xl border border-white/10 bg-[#141414] p-4 overflow-hidden md:w-[45%] lg:w-[30%]">
           <TradingViewWatchlistWidget symbols={symbols} direction="vertical" />
           {symbols.map((symbol) => (
             <AddAlertButton key={symbol} symbol={symbol} company={symbol} />
