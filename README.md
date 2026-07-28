@@ -38,6 +38,7 @@ Stock Vision is a full-stack financial platform built with **Next.js 15** and th
 
 - **Real-Time Stock Dashboard** — Live prices and charts via embedded TradingView widgets (candlestick, baseline, heatmap, top stories, and market overview widgets).
 - **Market Screener** — Browse and filter stocks with the TradingView screener widget.
+- **Interactive Charts** — Add or remove different indicators to charts.
 - **Powerful Search** — Command-palette style stock search (`SearchCommand`) for quickly finding and navigating to any symbol.
 - **Watchlist Management** — Add/remove stocks from a personal watchlist backed by MongoDB, with a dedicated dashboard view.
 - **Price Alerts** — Set "above" / "below" target-price alerts per symbol; view, edit, and delete them from the Alerts page.
