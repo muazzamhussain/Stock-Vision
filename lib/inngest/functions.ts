@@ -47,7 +47,7 @@ export const sendSignUpEmail = inngest.createFunction(
     );
 
     const response = await step.ai.infer("generate-welcome-intro", {
-      model: step.ai.models.gemini({ model: "gemini-2.5-flash-lite" }),
+      model: step.ai.models.gemini({ model: "gemini-3.5-flash-lite" }),
       body: {
         contents: [
           {
@@ -135,7 +135,7 @@ export const sendDailyNewsSummary = inngest.createFunction(
         );
 
         const response = await step.ai.infer(`summarize-news-${user.email}`, {
-          model: step.ai.models.gemini({ model: "gemini-2.5-flash-lite" }),
+          model: step.ai.models.gemini({ model: "gemini-3.5-flash-lite" }),
           body: {
             contents: [{ role: "user", parts: [{ text: prompt }] }],
           },
@@ -295,7 +295,7 @@ export const analyzeSentiment = inngest.createFunction(
     );
 
     const response = await step.ai.infer("analyze-sentiment-ai", {
-      model: step.ai.models.gemini({ model: "gemini-2.5-flash-lite" }),
+      model: step.ai.models.gemini({ model: "gemini-3.5-flash-lite" }),
       body: {
         contents: [{ role: "user", parts: [{ text: prompt }] }],
       },
