@@ -13,7 +13,13 @@ const Layout = async ({ children }: { children : React.ReactNode }) => {
         <main className="auth-layout">
             <section className="auth-left-section scrollbar-hide-default">
                 <Link href="/" className="auth-logo">
-                    <Image src="/assets/icons/logo.svg" alt="Stock Vision logo" width={140} height={32} className='h-8 w-auto' />
+                    <Image
+  src="/assets/icons/logo.svg"
+  alt="Stock Vision logo"
+  width={200}
+  height={60}
+  className="h-14 w-auto cursor-pointer"
+/>
                 </Link>
 
                 <div className="pb-6 lg:pb-8 flex-1">{children}</div>
@@ -38,7 +44,7 @@ const Layout = async ({ children }: { children : React.ReactNode }) => {
                 </div>
 
                 <div className="flex-1 relative">
-                    <Image src="/assets/images/dashboard.png" alt="Dashboard Preview" width={1440} height={1150} className="auth-dashboard-preview absolute top-0" />
+                    <Image src="/assets/images/dashboard.png" alt="Dashboard Preview" width={1440} height={1150} className="auth-dashboard-preview absolute top-0" loading="eager" />
                 </div>
             </section>
         </main>
