@@ -1254,7 +1254,7 @@ export const PRICE_ALERT_EMAIL_TEMPLATE = `<!DOCTYPE html>
                             <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin: 0 0 20px 0;">
                                 <tr>
                                     <!-- Current Price -->
-                                    <td class="price-card" width="48%" style="background-color: #1a1d23; border: 1px solid #30333A; border-radius: 8px; padding: 20px; text-align: center; vertical-align: top;">
+                                    <td class="price-card" width="48%" style="background-color: #1a1d23; border: 1px solid #30333A; border-radius: 8px; padding: 20px 5px; text-align: center; vertical-align: top;">
                                         <p style="margin: 0 0 8px 0; font-size: 11px; font-weight: 600; color: #9095A1; text-transform: uppercase; letter-spacing: 1px;">
                                             Current Price
                                         </p>
@@ -1267,7 +1267,7 @@ export const PRICE_ALERT_EMAIL_TEMPLATE = `<!DOCTYPE html>
                                     <td width="4%"></td>
 
                                     <!-- Target Price -->
-                                    <td class="price-card" width="48%" style="background-color: #1c1a10; border: 1px solid #FDD458; border-radius: 8px; padding: 20px; text-align: center; vertical-align: top;">
+                                    <td class="price-card" width="48%" style="background-color: #1c1a10; border: 1px solid #FDD458; border-radius: 8px; padding: 20px 5px; text-align: center; vertical-align: top;">
                                         <p style="margin: 0 0 8px 0; font-size: 11px; font-weight: 600; color: #9095A1; text-transform: uppercase; letter-spacing: 1px;">
                                             Your Target
                                         </p>
