@@ -77,7 +77,7 @@ Stock Vision is a full-stack financial platform built with **Next.js 15** and th
 ┌────────────────────────────────────────────────────────────┐
 │                        Client UI                           │
 │  Search • Screener • Stock Pages • Watchlist • Alerts      │
-└───────────────────────────┬────────────────────────────────┘
+└────────────────────────────┬───────────────────────────────┘
                              │
 ┌────────────────────────────▼─────────────────────────────────────────────────┐
 │                 Next.js Server Actions (lib/actions)                         │
@@ -85,12 +85,12 @@ Stock Vision is a full-stack financial platform built with **Next.js 15** and th
 │                                                                              │
 └──────────┬────────────────────────────────┬──────────────────────────────────┘
            │                                │
-   ┌───────▼─────────┐              ┌────────▼──────────┐
+   ┌───────▼─────────┐              ┌───────▼───────────┐
    │  Better Auth    │              │     MongoDB       │
    │ (sessions/auth) │              │ (models/schemas)  │
    └─────────────────┘              └───────────────────┘
            │
-┌───────────▼─────────────────────────────────────────────────┐
+┌──────────▼──────────────────────────────────────────────────┐
 │                  Inngest Event Layer                        │
 │   Sentiment Analysis Job  •  Email/Digest Workflows         │
 │                     ↓ Gemini AI ↓                           │
