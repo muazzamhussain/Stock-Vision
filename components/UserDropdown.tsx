@@ -15,6 +15,8 @@ import { LogOut } from "lucide-react";
 import NavItems from "@/components/NavItems";
 import { signOut } from "@/lib/actions/auth.actions";
 
+import {useState} from "react";
+
 const UserDropdown = ({
   user,
   initialStocks,
@@ -24,13 +26,15 @@ const UserDropdown = ({
 }) => {
   const router = useRouter();
 
+  const [open, setOpen] = useState(false);
+
   const handleSignOut = async () => {
     await signOut();
     router.push("/sign-in");
   };
 
   return (
-    <DropdownMenu>
+    <DropdownMenu open={open} onOpenChange={setOpen}>
       <DropdownMenuTrigger asChild>
         <Button
           variant="ghost"
@@ -76,7 +80,7 @@ const UserDropdown = ({
         </DropdownMenuItem>
         <DropdownMenuSeparator className="hidden sm:block bg-gray-600" />
         <nav className="sm:hidden">
-          <NavItems initialStocks={initialStocks} />
+          <NavItems initialStocks={initialStocks} onItemClick={() => setOpen(false)} />
         </nav>
       </DropdownMenuContent>
     </DropdownMenu>
