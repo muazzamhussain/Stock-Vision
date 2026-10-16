@@ -97,7 +97,7 @@ export const WELCOME_EMAIL_TEMPLATE = `<!DOCTYPE html>
                     <!-- Header with Logo -->
                     <tr>
                         <td align="left" class="mobile-header-padding" style="padding: 40px 40px 20px 40px;">
-                            <img src="https://res.cloudinary.com/dfivgcj3i/image/upload/v1788443010/logo_stkabn.webp" alt="Stock Vision Logo" width="150" style="max-width: 100%; height: auto;">
+                            <img src="https://res.cloudinary.com/dfivgcj3i/image/upload/v1792152084/stockvision_logo_i2bczj.webp" alt="Stock Vision Logo" width="150" style="max-width: 100%; height: auto;">
                         </td>
                     </tr>
                     
@@ -150,7 +150,7 @@ export const WELCOME_EMAIL_TEMPLATE = `<!DOCTYPE html>
                             
                             <!-- Footer Text -->
                             <p class="mobile-text dark-text-muted" style="margin: 40px 0 0 0; font-size: 14px; line-height: 1.5; color: #CCDADC !important; text-align: center;">
-                               Stock Vision HQ, Peshawar, KP, Pakistan<br>
+                                Peshawar, KP, Pakistan<br>
                                 <a href="{{unsubscribeUrl}}" style="color: #CCDADC !important; text-decoration: underline;">Unsubscribe</a> | 
                                 <a href="{{appUrl}}" style="color: #CCDADC !important; text-decoration: underline;">Visit Stock Vision</a><br>
                                 © 2026 Stock Vision
@@ -172,6 +172,8 @@ export const NEWS_SUMMARY_EMAIL_TEMPLATE = `<!DOCTYPE html>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="format-detection" content="telephone=no">
     <meta name="x-apple-disable-message-reformatting">
+    <meta name="color-scheme" content="dark">
+    <meta name="supported-color-schemes" content="dark">
     <title>Market News Summary Today</title>
     <!--[if mso]>
     <noscript>
@@ -184,120 +186,132 @@ export const NEWS_SUMMARY_EMAIL_TEMPLATE = `<!DOCTYPE html>
     </noscript>
     <![endif]-->
     <style type="text/css">
-        /* Dark mode styles */
-        @media (prefers-color-scheme: dark) {
-            .email-container {
-                background-color: #141414 !important;
-                border: 1px solid #30333A !important;
-            }
-            .dark-bg {
-                background-color: #050505 !important;
-            }
-            .dark-text {
-                color: #ffffff !important;
-            }
-            .dark-text-secondary {
-                color: #9ca3af !important;
-            }
-            .dark-text-muted {
-                color: #6b7280 !important;
-            }
-            .dark-border {
-                border-color: #30333A !important;
-            }
-            .dark-cta {
-                background-color: #1f2937 !important;
-                border: 1px solid #374151 !important;
-            }
-        }
+        body { margin: 0; padding: 0; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
+        table, td { mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
+        img { border: 0; outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; }
+
         
-        @media only screen and (max-width: 600px) {
-            .email-container {
-                width: 100% !important;
-                margin: 0 !important;
-            }
-            .mobile-padding {
-                padding: 24px !important;
-            }
-            .mobile-header-padding {
-                padding: 24px 24px 12px 24px !important;
-            }
-            .mobile-text {
-                font-size: 14px !important;
-                line-height: 1.5 !important;
-            }
-            .mobile-title {
-                font-size: 24px !important;
-                line-height: 1.3 !important;
-            }
-            .mobile-news-title {
-                font-size: 16px !important;
-                line-height: 1.3 !important;
-            }
-            .mobile-outer-padding {
-                padding: 20px 10px !important;
-            }
-        }
-        @media only screen and (max-width: 480px) {
-            .mobile-title {
-                font-size: 22px !important;
-            }
-            .mobile-padding {
-                padding: 15px !important;
-            }
-            .mobile-header-padding {
-                padding: 15px 15px 8px 15px !important;
-            }
-        }
+@media only screen and (max-width: 600px) {
+    .outer {
+        padding: 8px 0 !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+    }
+
+    .px-header {
+        padding: 12px 0 !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+    }
+
+    .px-hero {
+        padding: 14px 0 2px 0 !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+    }
+
+    .px-content {
+        padding: 0 0 4px 0 !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+    }
+
+    .px-cta {
+        padding: 8px 0 16px 0 !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+    }
+
+    .px-footer {
+        padding: 12px 0 14px 0 !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+    }
+
+    .title {
+        font-size: 20px !important;
+    }
+
+    .cta {
+        display: block !important;
+        text-align: center !important;
+    }
+}
+
     </style>
 </head>
-<body style="margin: 0; padding: 0; background-color: #050505; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+<body style="margin: 0; padding: 0; background-color: #050505; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+
+    <!-- Preheader (inbox preview text) -->
+    <div style="display: none; max-height: 0; overflow: hidden; mso-hide: all; font-size: 1px; line-height: 1px; color: #050505;">
+        The headlines moving the markets today, in one quick read.
+    </div>
+
     <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background-color: #050505;">
         <tr>
-            <td align="center" class="mobile-outer-padding" style="padding: 40px 20px;">
-                <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" class="email-container" style="max-width: 600px; background-color: #141414; border-radius: 8px; border: 1px solid #30333A;">
-                    
-                    <!-- Header with Logo -->
+            <td align="center" class="outer" style="padding: 16px 0px;">
+
+                <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" background-color: #141414; border: 1px solid #30333A; border-top: 3px solid #FDD458; border-radius: 10px;">
+
+                    <!-- Header: logo + date -->
                     <tr>
-                        <td align="left" class="mobile-header-padding" style="padding: 40px 40px 20px 40px;">
-                            <img src="https://res.cloudinary.com/dfivgcj3i/image/upload/v1788443010/logo_stkabn.webp" alt="Stock Vision Logo" width="150" style="max-width: 100%; height: auto;">
+                        <td class="px-header" style="padding: 14px 20px; border-bottom: 1px solid #30333A;">
+                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                                <tr>
+                                    <td align="left" valign="middle">
+                                        <img src="https://res.cloudinary.com/dfivgcj3i/image/upload/v1792152084/stockvision_logo_i2bczj.webp" alt="Stock Vision" width="120" style="display: block; width: 120px; max-width: 100%; height: auto;">
+                                    </td>
+                                    <td align="right" valign="middle" style="white-space: nowrap;">
+                                        <span style="display: inline-block; padding: 4px 10px; border: 1px solid #30333A; border-radius: 999px; background-color: #1b1b1b; font-size: 12px; line-height: 1.3; color: #a1a8b3;">{{date}}</span>
+                                    </td>
+                                </tr>
+                            </table>
                         </td>
                     </tr>
-                    
-                    <!-- Main Content -->
+
+                    <!-- Title -->
                     <tr>
-                        <td class="mobile-padding" style="padding: 40px 40px 40px 40px;">
-                            
-                            <!-- Header -->
-                            <h1 class="mobile-title dark-text" style="margin: 0 0 20px 0; font-size: 24px; font-weight: 600; color: #FDD458; line-height: 1.2;">
+                        <td class="px-hero" style="padding: 18px 20px 4px 20px;">
+                            <h1 class="title" style="margin: 0 0 4px 0; font-size: 22px; line-height: 1.25; font-weight: 700; letter-spacing: -0.2px; color: #FDD458;">
                                 Market News Summary Today
                             </h1>
-                            
-                            <!-- Date -->
-                            <p class="mobile-text dark-text-muted" style="margin: 0 0 30px 0; font-size: 14px; line-height: 1.4; color: #6b7280;">
-                                {{date}}
+                            <p style="margin: 0 0 14px 0; font-size: 14px; line-height: 1.5; color: #a1a8b3;">
+                                The headlines moving the markets, in one quick read.
                             </p>
-                            
-                            <!-- News Summary -->
-                            {{newsContent}}
-                            
-                            <!-- Footer Text -->
-                            <div style="text-align: center; margin: 40px 0 0 0;">
-                                <p style="margin: 0 0 10px 0; font-size: 14px; line-height: 1.5; color: #CCDADC !important;">
-                                    You're receiving this because you subscribed to Stock Vision news updates.
-                                </p>
-                                <p style="margin: 0 0 10px 0; font-size: 14px; line-height: 1.5; color: #CCDADC !important;">
-                                    <a href="#" style="color: #CCDADC !important; text-decoration: underline;">Unsubscribe</a> | 
-                                    <a href="{{appUrl}}" style="color: #CCDADC !important; text-decoration: underline;">Visit Stock Vision</a>
-                                </p>
-                                <p style="margin: 0; font-size: 14px; line-height: 1.5; color: #CCDADC !important;">
-                                    © 2026 Stock Vision
-                                </p>
-                            </div>
                         </td>
                     </tr>
-                    
+
+                    <!-- News -->
+                    <tr>
+                        <td class="px-content" style="padding: 0 20px 6px 20px;">
+                            {{newsContent}}
+                        </td>
+                    </tr>
+
+                    <!-- CTA -->
+                    <tr>
+                        <td class="px-cta" align="left" style="padding: 10px 20px 20px 20px;">
+                            <a class="cta" href="{{appUrl}}" style="display: inline-block; padding: 11px 22px; background-color: #FDD458; border-radius: 8px; font-size: 14px; line-height: 1.2; font-weight: 700; color: #050505; text-decoration: none;">Open Stock Vision</a>
+                        </td>
+                    </tr>
+
+                    <!-- Footer -->
+                    <tr>
+                        <td class="px-footer" style="padding: 14px 20px 16px 20px; border-top: 1px solid #30333A; background-color: #101010; border-radius: 0 0 10px 10px;">
+                            <p style="margin: 0 0 6px 0; font-size: 12px; line-height: 1.5; color: #8b93a1;">
+                                You're receiving this because you subscribed to Stock Vision news updates.
+                                <a href="#" style="color: #a1a8b3; text-decoration: underline;">Unsubscribe</a>
+                                &nbsp;|&nbsp;
+                                <a href="{{appUrl}}" style="color: #a1a8b3; text-decoration: underline;">Visit Stock Vision</a>
+                            </p>
+                            <p style="margin: 0; font-size: 11px; line-height: 1.5; color: #8b93a1;">
+                                Market information is for general purposes only and is not financial advice. &copy; 2026 Stock Vision
+                            </p>
+                        </td>
+                    </tr>
+
                 </table>
+
             </td>
         </tr>
     </table>
@@ -410,7 +424,7 @@ export const STOCK_ALERT_UPPER_EMAIL_TEMPLATE = `<!DOCTYPE html>
                     <!-- Header with Logo -->
                     <tr>
                         <td align="left" class="mobile-header-padding" style="padding: 40px 40px 20px 40px;">
-                            <img src="https://res.cloudinary.com/dfivgcj3i/image/upload/v1788443010/logo_stkabn.webp" alt="Stock Vision Logo" width="150" style="max-width: 100%; height: auto;">
+                            <img src="https://res.cloudinary.com/dfivgcj3i/image/upload/v1792152084/stockvision_logo_i2bczj.webp" alt="Stock Vision Logo" width="150" style="max-width: 100%; height: auto;">
                         </td>
                     </tr>
                     
@@ -619,7 +633,7 @@ export const STOCK_ALERT_LOWER_EMAIL_TEMPLATE = `<!DOCTYPE html>
                     <!-- Header with Logo -->
                     <tr>
                         <td align="left" class="mobile-header-padding" style="padding: 40px 40px 20px 40px;">
-                            <img src="https://res.cloudinary.com/dfivgcj3i/image/upload/v1788443010/logo_stkabn.webp" alt="Stock Vision Logo" width="150" style="max-width: 100%; height: auto;">
+                            <img src="https://res.cloudinary.com/dfivgcj3i/image/upload/v1792152084/stockvision_logo_i2bczj.webp" alt="Stock Vision Logo" width="150" style="max-width: 100%; height: auto;">
                         </td>
                     </tr>
                     
@@ -819,7 +833,7 @@ export const VOLUME_ALERT_EMAIL_TEMPLATE = `<!DOCTYPE html>
                     <!-- Header with Logo -->
                     <tr>
                         <td align="left" class="mobile-header-padding" style="padding: 40px 40px 20px 40px;">
-                            <img src="https://res.cloudinary.com/dfivgcj3i/image/upload/v1788443010/logo_stkabn.webp" alt="Stock Vision Logo" width="150" style="max-width: 100%; height: auto;">
+                            <img src="https://res.cloudinary.com/dfivgcj3i/image/upload/v1792152084/stockvision_logo_i2bczj.webp" alt="Stock Vision Logo" width="150" style="max-width: 100%; height: auto;">
                         </td>
                     </tr>
                     
@@ -1042,7 +1056,7 @@ export const INACTIVE_USER_REMINDER_EMAIL_TEMPLATE = `<!DOCTYPE html>
                     <!-- Header with Logo -->
                     <tr>
                         <td align="left" class="mobile-header-padding" style="padding: 40px 40px 20px 40px;">
-                            <img src="https://res.cloudinary.com/dfivgcj3i/image/upload/v1788443010/logo_stkabn.webp" alt="Stock Vision Logo" width="150" style="max-width: 100%; height: auto;">
+                            <img src="https://res.cloudinary.com/dfivgcj3i/image/upload/v1792152084/stockvision_logo_i2bczj.webp" alt="Stock Vision Logo" width="150" style="max-width: 100%; height: auto;">
                         </td>
                     </tr>
                     
@@ -1210,7 +1224,7 @@ export const PRICE_ALERT_EMAIL_TEMPLATE = `<!DOCTYPE html>
                     <!-- Header with Logo -->
                     <tr>
                         <td align="left" class="mobile-header-padding" style="padding: 40px 40px 20px 40px;">
-                            <img src="https://res.cloudinary.com/dfivgcj3i/image/upload/v1788443010/logo_stkabn.webp" alt="Stock Vision Logo" width="150" style="max-width: 100%; height: auto;">
+                            <img src="https://res.cloudinary.com/dfivgcj3i/image/upload/v1792152084/stockvision_logo_i2bczj.webp" alt="Stock Vision Logo" width="150" style="max-width: 100%; height: auto;">
                         </td>
                     </tr>
 
@@ -1302,7 +1316,7 @@ export const PRICE_ALERT_EMAIL_TEMPLATE = `<!DOCTYPE html>
 
                             <!-- Footer Text -->
                             <p class="mobile-text dark-text-muted" style="margin: 40px 0 0 0; font-size: 14px; line-height: 1.5; color: #CCDADC !important; text-align: center;">
-                                Stock Vision HQ, Peshawar, KP, Pakistan<br>
+                                 Peshawar, KP, Pakistan<br>
                                 <a href="{{unsubscribeUrl}}" style="color: #CCDADC !important; text-decoration: underline;">Unsubscribe</a> |
                                 <a href="{{appUrl}}" style="color: #CCDADC !important; text-decoration: underline;">Visit Stock Vision</a><br>
                                 © 2026 Stock Vision
@@ -1413,7 +1427,7 @@ export const RESET_PASSWORD_EMAIL_TEMPLATE = `<!DOCTYPE html>
                     <!-- Header with Logo -->
                     <tr>
                         <td align="left" class="mobile-header-padding" style="padding: 40px 40px 20px 40px;">
-                            <img src="https://res.cloudinary.com/dfivgcj3i/image/upload/v1788443010/logo_stkabn.webp" alt="Stock Vision Logo" width="150" style="max-width: 100%; height: auto;">
+                            <img src="https://res.cloudinary.com/dfivgcj3i/image/upload/v1792152084/stockvision_logo_i2bczj.webp" alt="Stock Vision Logo" width="150" style="max-width: 100%; height: auto;">
                         </td>
                     </tr>
 
@@ -1479,7 +1493,7 @@ export const RESET_PASSWORD_EMAIL_TEMPLATE = `<!DOCTYPE html>
 
                             <!-- Footer Text -->
                             <p class="mobile-text dark-text-muted" style="margin: 40px 0 0 0; font-size: 14px; line-height: 1.5; color: #CCDADC !important; text-align: center;">
-                                Stock Vision HQ, Peshawar, KP, Pakistan<br>
+                                 Peshawar, KP, Pakistan<br>
                                 <a href="{{appUrl}}" style="color: #CCDADC !important; text-decoration: underline;">Visit Stock Vision</a><br>
                                 © 2026 Stock Vision
                             </p>

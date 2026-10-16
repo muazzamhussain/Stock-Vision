@@ -61,7 +61,7 @@ export const sendNewsSummaryEmail = async ({
   const mailOptions = {
     from: `"Stock Vision News" <Stock Vision@muazzam.page.gd>`,
     to: email,
-    subject: `📈 Market News Summary Today - ${date}`,
+    subject: `Market News Summary Today - ${date}`,
     text: `Today's market news summary from Stock Vision`,
     html: htmlTemplate,
   };

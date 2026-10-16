@@ -1,46 +1,78 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { getSentimentForSymbol, triggerSentimentAnalysis } from "@/lib/actions/sentiment.actions";
 import { toast } from "sonner";
 import { RefreshCw, TrendingUp, TrendingDown, Minus } from "lucide-react";
 
+const POLL_INTERVAL = 3000; // ms between checks
+const MAX_ATTEMPTS = 10; // gives up after ~30s so the button never stays stuck
+
 const SentimentCard = ({ symbol }: { symbol: string }) => {
   const [sentiment, setSentiment] = useState<any>(null);
   const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const pollRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const loadSentiment = async () => {
-    setLoading(true);
+  const loadSentiment = async (silent = false) => {
+    if (!silent) setLoading(true);
     try {
       const data = await getSentimentForSymbol(symbol);
       setSentiment(data);
+      return data;
     } catch (error) {
       console.error("Failed to load sentiment:", error);
+      return null;
     } finally {
-      setLoading(false);
+      if (!silent) setLoading(false);
     }
   };
 
   useEffect(() => {
     loadSentiment();
+
+    return () => {
+      if (pollRef.current) clearTimeout(pollRef.current);
+      setIsAnalyzing(false);
+    };
   }, [symbol]);
 
   const handleRefresh = async () => {
-    setRefreshing(true);
+    if (isAnalyzing) return; // extra guard against double triggers
+
+    setIsAnalyzing(true);
+    const previousAnalyzedAt = sentiment?.analyzedAt;
+
     try {
       const result = await triggerSentimentAnalysis(symbol);
-      if (result.success) {
-        toast.success("Sentiment analysis triggered. It may take a moment to update.");
-        setTimeout(loadSentiment, 3000);
-      } else {
+
+      if (!result.success) {
         toast.error(result.error || "Failed to trigger sentiment analysis.");
+        setIsAnalyzing(false);
+        return;
       }
+
+      toast.success("Sentiment analysis triggered. It may take a moment to update.");
+
+      // Keep the button disabled until fresh data shows up (or we time out)
+      let attempts = 0;
+      const poll = async () => {
+        attempts++;
+        const data = await loadSentiment(true);
+        const isUpdated = data && data.analyzedAt !== previousAnalyzedAt;
+
+        if (isUpdated || attempts >= MAX_ATTEMPTS) {
+          setIsAnalyzing(false);
+          return;
+        }
+        pollRef.current = setTimeout(poll, POLL_INTERVAL);
+      };
+
+      pollRef.current = setTimeout(poll, POLL_INTERVAL);
     } catch (error) {
       toast.error("Failed to trigger sentiment analysis.");
-    } finally {
-      setRefreshing(false);
+      setIsAnalyzing(false);
     }
   };
 
@@ -87,11 +119,11 @@ const SentimentCard = ({ symbol }: { symbol: string }) => {
           variant="ghost"
           size="sm"
           onClick={handleRefresh}
-          disabled={refreshing}
-          className="text-gray-400 hover:text-yellow-400 hover:bg-yellow-500/10"
+          disabled={isAnalyzing}
+          className="text-gray-400 hover:text-yellow-400 hover:bg-yellow-500/10 disabled:cursor-not-allowed disabled:opacity-50"
         >
-          <RefreshCw className={`h-4 w-4 mr-2 ${refreshing ? "animate-spin" : ""}`} />
-          Refresh
+          <RefreshCw className={`h-4 w-4 mr-2 ${isAnalyzing ? "animate-spin" : ""}`} />
+          {isAnalyzing ? "Analyzing..." : "Refresh"}
         </Button>
       </div>
 
@@ -142,12 +174,12 @@ const SentimentCard = ({ symbol }: { symbol: string }) => {
           <p className="text-gray-400 mb-4">No sentiment data available yet.</p>
           <Button
             onClick={handleRefresh}
-            disabled={refreshing}
+            disabled={isAnalyzing}
             variant="outline"
-            className="border-gray-600 text-gray-400 hover:text-yellow-400 hover:border-yellow-400"
+            className="border-gray-600 text-gray-400 hover:text-yellow-400 hover:border-yellow-400 disabled:cursor-not-allowed disabled:opacity-50"
           >
-            <RefreshCw className={`h-4 w-4 mr-2 ${refreshing ? "animate-spin" : ""}`} />
-            Analyze Sentiment
+            <RefreshCw className={`h-4 w-4 mr-2 ${isAnalyzing ? "animate-spin" : ""}`} />
+            {isAnalyzing ? "Analyzing..." : "Analyze Sentiment"}
           </Button>
         </div>
       )}
