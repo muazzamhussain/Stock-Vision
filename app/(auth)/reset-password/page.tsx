@@ -77,6 +77,7 @@ const ResetPasswordPage = () => {
           name="password"
           label="Password"
           type="password"
+          showPasswordToggle
           placeholder="Enter a strong password"
           register={register}
           error={errors.password}
@@ -93,6 +94,7 @@ const ResetPasswordPage = () => {
           name="confirmPassword"
           label="Confirm Password"
           type="password"
+          showPasswordToggle
           placeholder="Re-enter your new password"
           register={register}
           error={errors.confirmPassword}

@@ -95,6 +95,7 @@ const SignUp = () => {
           name="password"
           label="Password"
           type="password"
+          showPasswordToggle
           placeholder="Enter a Strong Password"
           register={register}
           error={errors.password}

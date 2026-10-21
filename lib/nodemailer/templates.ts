@@ -97,7 +97,7 @@ export const WELCOME_EMAIL_TEMPLATE = `<!DOCTYPE html>
                     <!-- Header with Logo -->
                     <tr>
                         <td align="left" class="mobile-header-padding" style="padding: 40px 40px 20px 40px;">
-                            <img src="https://res.cloudinary.com/dfivgcj3i/image/upload/v1792152084/stockvision_logo_i2bczj.webp" alt="Stock Vision Logo" width="150" style="max-width: 100%; height: auto;">
+                            <img src="https://res.cloudinary.com/dfivgcj3i/image/upload/v1792151998/stockvision_logo_ko2imm.png" alt="Stock Vision Logo" width="150" style="max-width: 100%; height: auto;">
                         </td>
                     </tr>
                     
@@ -249,7 +249,7 @@ export const NEWS_SUMMARY_EMAIL_TEMPLATE = `<!DOCTYPE html>
 
     <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background-color: #050505;">
         <tr>
-            <td align="center" class="outer" style="padding: 16px 0px;">
+            <td align="center" class="outer" style="padding: 16px 4px;">
 
                 <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" background-color: #141414; border: 1px solid #30333A; border-top: 3px solid #FDD458; border-radius: 10px;">
 
@@ -259,7 +259,7 @@ export const NEWS_SUMMARY_EMAIL_TEMPLATE = `<!DOCTYPE html>
                             <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
                                 <tr>
                                     <td align="left" valign="middle">
-                                        <img src="https://res.cloudinary.com/dfivgcj3i/image/upload/v1792152084/stockvision_logo_i2bczj.webp" alt="Stock Vision" width="120" style="display: block; width: 120px; max-width: 100%; height: auto;">
+                                        <img src="https://res.cloudinary.com/dfivgcj3i/image/upload/v1792151998/stockvision_logo_ko2imm.png" alt="Stock Vision" width="120" style="display: block; width: 120px; max-width: 100%; height: auto;">
                                     </td>
                                     <td align="right" valign="middle" style="white-space: nowrap;">
                                         <span style="display: inline-block; padding: 4px 10px; border: 1px solid #30333A; border-radius: 999px; background-color: #1b1b1b; font-size: 12px; line-height: 1.3; color: #a1a8b3;">{{date}}</span>
@@ -424,7 +424,7 @@ export const STOCK_ALERT_UPPER_EMAIL_TEMPLATE = `<!DOCTYPE html>
                     <!-- Header with Logo -->
                     <tr>
                         <td align="left" class="mobile-header-padding" style="padding: 40px 40px 20px 40px;">
-                            <img src="https://res.cloudinary.com/dfivgcj3i/image/upload/v1792152084/stockvision_logo_i2bczj.webp" alt="Stock Vision Logo" width="150" style="max-width: 100%; height: auto;">
+                            <img src="https://res.cloudinary.com/dfivgcj3i/image/upload/v1792151998/stockvision_logo_ko2imm.png" alt="Stock Vision Logo" width="150" style="max-width: 100%; height: auto;">
                         </td>
                     </tr>
                     
@@ -633,7 +633,7 @@ export const STOCK_ALERT_LOWER_EMAIL_TEMPLATE = `<!DOCTYPE html>
                     <!-- Header with Logo -->
                     <tr>
                         <td align="left" class="mobile-header-padding" style="padding: 40px 40px 20px 40px;">
-                            <img src="https://res.cloudinary.com/dfivgcj3i/image/upload/v1792152084/stockvision_logo_i2bczj.webp" alt="Stock Vision Logo" width="150" style="max-width: 100%; height: auto;">
+                            <img src="https://res.cloudinary.com/dfivgcj3i/image/upload/v1792151998/stockvision_logo_ko2imm.png" alt="Stock Vision Logo" width="150" style="max-width: 100%; height: auto;">
                         </td>
                     </tr>
                     
@@ -833,7 +833,7 @@ export const VOLUME_ALERT_EMAIL_TEMPLATE = `<!DOCTYPE html>
                     <!-- Header with Logo -->
                     <tr>
                         <td align="left" class="mobile-header-padding" style="padding: 40px 40px 20px 40px;">
-                            <img src="https://res.cloudinary.com/dfivgcj3i/image/upload/v1792152084/stockvision_logo_i2bczj.webp" alt="Stock Vision Logo" width="150" style="max-width: 100%; height: auto;">
+                            <img src="https://res.cloudinary.com/dfivgcj3i/image/upload/v1792151998/stockvision_logo_ko2imm.png" alt="Stock Vision Logo" width="150" style="max-width: 100%; height: auto;">
                         </td>
                     </tr>
                     
@@ -1056,7 +1056,7 @@ export const INACTIVE_USER_REMINDER_EMAIL_TEMPLATE = `<!DOCTYPE html>
                     <!-- Header with Logo -->
                     <tr>
                         <td align="left" class="mobile-header-padding" style="padding: 40px 40px 20px 40px;">
-                            <img src="https://res.cloudinary.com/dfivgcj3i/image/upload/v1792152084/stockvision_logo_i2bczj.webp" alt="Stock Vision Logo" width="150" style="max-width: 100%; height: auto;">
+                            <img src="https://res.cloudinary.com/dfivgcj3i/image/upload/v1792151998/stockvision_logo_ko2imm.png" alt="Stock Vision Logo" width="150" style="max-width: 100%; height: auto;">
                         </td>
                     </tr>
                     
@@ -1224,7 +1224,7 @@ export const PRICE_ALERT_EMAIL_TEMPLATE = `<!DOCTYPE html>
                     <!-- Header with Logo -->
                     <tr>
                         <td align="left" class="mobile-header-padding" style="padding: 40px 40px 20px 40px;">
-                            <img src="https://res.cloudinary.com/dfivgcj3i/image/upload/v1792152084/stockvision_logo_i2bczj.webp" alt="Stock Vision Logo" width="150" style="max-width: 100%; height: auto;">
+                            <img src="https://res.cloudinary.com/dfivgcj3i/image/upload/v1792151998/stockvision_logo_ko2imm.png" alt="Stock Vision Logo" width="150" style="max-width: 100%; height: auto;">
                         </td>
                     </tr>
 
@@ -1427,7 +1427,7 @@ export const RESET_PASSWORD_EMAIL_TEMPLATE = `<!DOCTYPE html>
                     <!-- Header with Logo -->
                     <tr>
                         <td align="left" class="mobile-header-padding" style="padding: 40px 40px 20px 40px;">
-                            <img src="https://res.cloudinary.com/dfivgcj3i/image/upload/v1792152084/stockvision_logo_i2bczj.webp" alt="Stock Vision Logo" width="150" style="max-width: 100%; height: auto;">
+                            <img src="https://res.cloudinary.com/dfivgcj3i/image/upload/v1792151998/stockvision_logo_ko2imm.png" alt="Stock Vision Logo" width="150" style="max-width: 100%; height: auto;">
                         </td>
                     </tr>
 
